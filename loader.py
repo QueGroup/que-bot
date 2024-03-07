@@ -21,19 +21,14 @@ from nudenet import (
     NudeDetector,
 )
 
-from data.config import (
-    load_config,
-)
-from functions.main_app.language_ware import (
-    setup_middleware,
-)
-from utils.YandexMap.api import (
+from src.tgbot.config import load_config
+from src.infrastructure.YandexMap.api import (
     Client,
 )
-
-from utils.yoomoney import (
+from src.infrastructure.yoomoney import (
     YooMoneyWallet,
 )
+from src.tgbot.services.app.language_ware import setup_middleware
 
 bot = Bot(token=load_config().tg_bot.token, parse_mode=types.ParseMode.HTML)
 storage = RedisStorage2() if load_config().tg_bot.use_redis else MemoryStorage()
