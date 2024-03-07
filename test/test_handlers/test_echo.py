@@ -7,7 +7,7 @@ from aiogram.utils.markdown import (
 )
 import pytest
 
-from handlers.echo_handler import (
+from src.tgbot.handlers.echo_handler import (
     bot_echo,
 )
 

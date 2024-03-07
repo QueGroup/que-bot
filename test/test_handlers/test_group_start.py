@@ -2,11 +2,11 @@ from unittest.mock import (
     AsyncMock,
 )
 
-import pytest
-
-from handlers.groups.start import (
+from src.tgbot.handlers.groups.start import (
     start_group_handler,
 )
+import pytest
+
 from loader import (
     _,
 )

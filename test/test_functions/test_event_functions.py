@@ -16,11 +16,11 @@ from unittest.mock import (
 
 import pytest
 
-from functions.event import (
-    extra_features,
-)
-from utils.db_api import (
+from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.services.event import (
+    extra_features,
 )
 
 

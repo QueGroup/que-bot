@@ -6,20 +6,12 @@ from typing import (
 import aiohttp
 import pytest
 
-from data.config import (
-    load_config,
-)
 from loader import (
     client,
 )
-from utils.YandexMap.api import (
-    Client,
-)
-from utils.YandexMap.exceptions import (
-    InvalidKey,
-    NothingFound,
-    UnexpectedResponse,
-)
+from src.infrastructure.YandexMap.api import Client
+from src.infrastructure.YandexMap.exceptions import UnexpectedResponse, InvalidKey, NothingFound
+from src.tgbot.config import load_config
 
 
 @pytest.mark.asyncio
