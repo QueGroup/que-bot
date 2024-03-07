@@ -3,9 +3,7 @@ from pathlib import (
     Path,
 )
 
-from data.config import (
-    load_config,
-)
+from src.tgbot.config import load_config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
