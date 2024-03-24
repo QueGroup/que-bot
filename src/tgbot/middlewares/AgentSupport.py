@@ -1,31 +1,32 @@
 from typing import (
-    NoReturn,
-)
+    Dict, Any, )
 
 from aiogram import (
-    Dispatcher,
-    types,
-)
-from aiogram.dispatcher.handler import (
-    CancelHandler,
-)
-from aiogram.dispatcher.middlewares import (
     BaseMiddleware,
 )
+from aiogram.types import TelegramObject
+
+from src.tgbot.types import Handler
 
 
 class SupportMiddleware(BaseMiddleware):
-    @staticmethod
-    async def on_pre_process_message(message: types.Message, data: dict) -> NoReturn:
-        dispatcher = Dispatcher.get_current()
-        state = dispatcher.current_state(
-            chat=message.from_user.id, user=message.from_user.id
-        )
 
-        state_str = str(await state.get_state())
-        if state_str == "in_support":
-            data = await state.get_data()
-            second_id = data.get("second_id")
-            await message.copy_to(second_id)
-
-            raise CancelHandler()
+    async def __call__(
+            self,
+            handler: Handler,
+            event: TelegramObject,
+            data: Dict[str, Any]
+    ) -> Any:
+        pass
+        # dispatcher = Dispatcher.get_current()
+        # state = dispatcher.current_state(
+        #     chat=message.from_user.id, user=message.from_user.id
+        # )
+        #
+        # state_str = str(await state.get_state())
+        # if state_str == "in_support":
+        #     data = await state.get_data()
+        #     second_id = data.get("second_id")
+        #     await message.copy_to(second_id)
+        #
+        #     raise CancelHandler()
