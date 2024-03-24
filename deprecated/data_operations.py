@@ -2,12 +2,8 @@ import shutil
 
 import aiofiles
 
-from src.infrastructure.db_api import (
-    db_commands,
-)
 
-
-async def dump_users_to_file():
+async def dump_users_to_file(db_commands=None):
     async with aiofiles.open("users.txt", "w", encoding="utf-8") as file:
         _text = ""
         _users = await db_commands.select_all_users()

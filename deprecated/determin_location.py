@@ -18,9 +18,7 @@ from loader import (
 from src.infrastructure.YandexMap.exceptions import (
     NothingFound,
 )
-from src.infrastructure.db_api import (
-    db_commands,
-)
+
 from src.tgbot.keyboards.inline.registration_inline import (
     confirm_keyboard,
 )
@@ -64,7 +62,7 @@ class Location(AsyncObj):
 
 
 class RegistrationStrategy(UserDataUpdateStrategy):
-    async def update_user_data(self: Location, message: Message):
+    async def update_user_data(self: Location, message: Message, db_commands=None):
         await db_commands.update_user_data(
             telegram_id=message.from_user.id,
             city=self.city,
@@ -75,21 +73,21 @@ class RegistrationStrategy(UserDataUpdateStrategy):
 
 
 class FiltersStrategy(UserDataUpdateStrategy):
-    async def update_user_data(self: Location, message: Message):
+    async def update_user_data(self: Location, message: Message, db_commands=None):
         await db_commands.update_user_data(
             telegram_id=message.from_user.id, need_city=self.city
         )
 
 
 class EventStrategy(UserDataUpdateStrategy):
-    async def update_user_data(self: Location, message: Message):
+    async def update_user_data(self: Location, message: Message, db_commands=None):
         await db_commands.update_user_meetings_data(
             telegram_id=message.from_user.id, venue=self.city
         )
 
 
 class EventFiltersStrategy(UserDataUpdateStrategy):
-    async def update_user_data(self: Location, message: Message):
+    async def update_user_data(self: Location, message: Message, db_commands=None):
         await db_commands.update_user_meetings_data(
             telegram_id=message.from_user.id, need_location=self.city
         )

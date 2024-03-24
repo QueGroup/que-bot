@@ -1,8 +1,3 @@
-from typing import (
-    Optional,
-    Union,
-)
-
 from aiogram import (
     Bot,
 )
@@ -10,9 +5,6 @@ from aiogram.types import (
     CallbackQuery,
 )
 
-from loader import (
-    _,
-)
 from src.tgbot.keyboards.inline.poster_inline import (
     cancel_event_keyboard,
     create_moderate_ik,
@@ -23,8 +15,8 @@ from src.tgbot.keyboards.inline.poster_inline import (
 
 class TemplateEvent:
     def __init__(self) -> None:
-        self.message_for_event = _(
-            "<b>{}</b> \n" + "Когда: {} \n" + "Где: {} \n\n" + "{}"
+        self.message_for_event = (
+                "<b>{}</b> \n" + "Когда: {} \n" + "Где: {} \n\n" + "{}"
         )
 
     def template_event(self) -> str:

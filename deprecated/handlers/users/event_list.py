@@ -14,7 +14,7 @@ from loader import (
 from src.infrastructure.db_api import (
     db_commands,
 )
-from src.tgbot.services.event.extra_features import (
+from deprecated.extra_features import (
     create_form,
     get_next_registration,
 )

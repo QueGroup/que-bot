@@ -13,7 +13,7 @@ from loader import (
 from src.tgbot.keyboards.inline.poster_inline import (
     poster_keyboard,
 )
-from src.tgbot.services.event.extra_features import (
+from deprecated.extra_features import (
     add_events_to_user,
     check_event_date,
     create_form,

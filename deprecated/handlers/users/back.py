@@ -24,13 +24,13 @@ from src.infrastructure.db_api import (
 from src.tgbot.keyboards.inline.admin_inline import (
     unban_user_keyboard,
 )
-from src.tgbot.keyboards.inline.filters_inline import (
+from deprecated.inline.filters_inline import (
     filters_keyboard,
 )
 from src.tgbot.keyboards.inline.menu_profile_inline import (
     get_profile_keyboard,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     delete_message,
     display_profile,
     information_menu,

@@ -6,15 +6,13 @@ from loader import (
     _,
     bot,
 )
-from src.infrastructure.db_api import (
-    db_commands,
-)
+
 from src.tgbot.keyboards.inline.questionnaires_inline import (
     viewing_ques_keyboard,
 )
 
 
-async def send_message_week(message: Message) -> None:
+async def send_message_week(message: Message, db_commands=None) -> None:
     user = await db_commands.select_user(telegram_id=message.from_user.id)
 
     user_gender = "Парней" if user.need_partner_sex == "Мужской" else "Девушек"

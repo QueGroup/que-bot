@@ -44,14 +44,14 @@ from src.tgbot.keyboards.inline.poster_inline import (
     cancel_registration_keyboard,
     poster_keyboard,
 )
-from src.tgbot.services.app.determin_location import (
+from deprecated.determin_location import (
     EventStrategy,
     Location,
 )
-from src.tgbot.services.event.extra_features import (
+from deprecated.extra_features import (
     check_event_date,
 )
-from src.tgbot.services.event.templates_messages import (
+from deprecated.templates_messages import (
     ME,
 )
 

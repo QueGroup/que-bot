@@ -12,7 +12,7 @@ from src.tgbot.keyboards.inline.back_inline import (
 from src.tgbot.keyboards.inline.guide_inline import (
     guide_callback,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     handle_guide_callback,
     information_menu,
     send_photo_with_caption,

@@ -2,15 +2,8 @@ from aiogram.types import (
     Message,
 )
 
-from loader import (
-    _,
-)
-from src.infrastructure.db_api import (
-    db_commands,
-)
 
-
-async def get_statistics(message: Message):
+async def get_statistics(message: Message, db_commands=None, _=None):
     user = await db_commands.select_user(telegram_id=message.from_user.id)
     user_city = user.city
     users_gender_m = await db_commands.count_all_users_kwarg(sex="Мужской")

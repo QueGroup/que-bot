@@ -25,7 +25,7 @@ from src.tgbot.keyboards.inline.questionnaires_inline import (
     action_reciprocity_keyboard,
     action_report_keyboard,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     delete_message,
 )
 from src.tgbot.services.dating import (
@@ -41,7 +41,7 @@ from src.tgbot.services.dating import (
     StartFindingSuccess,
     StoppedAction,
 )
-from src.tgbot.services.dating.get_next_user_func import (
+from deprecated.get_next_user_func import (
     get_next_user,
 )
 

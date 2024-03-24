@@ -1,8 +1,5 @@
 import random
 import secrets
-from typing import (
-    Optional,
-)
 
 from aiogram.types import (
     CallbackQuery,
@@ -17,10 +14,10 @@ from loader import (
 from src.tgbot.keyboards.inline.questionnaires_inline import (
     questionnaires_keyboard,
 )
-from src.tgbot.services.dating.get_next_user_func import (
+from deprecated.get_next_user_func import (
     get_next_user,
 )
-from src.tgbot.services.dating.send_form_func import (
+from deprecated.send_form_func import (
     send_questionnaire,
 )
 

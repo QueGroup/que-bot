@@ -18,7 +18,7 @@ from src.tgbot.keyboards.inline.admin_inline import (
 from src.tgbot.keyboards.inline.questionnaires_inline import (
     action_keyboard_monitoring,
 )
-from src.tgbot.services.dating.create_forms_funcs import (
+from deprecated.create_forms_funcs import (
     monitoring_questionnaire,
 )
 

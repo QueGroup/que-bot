@@ -30,15 +30,15 @@ from src.infrastructure.db_api import (
 from src.tgbot.keyboards.inline.change_data_profile_inline import (
     gender_keyboard,
 )
-from src.tgbot.keyboards.inline.filters_inline import (
+from deprecated.inline.filters_inline import (
     event_filters_keyboard,
     filters_keyboard,
 )
-from src.tgbot.services.app.determin_location import (
+from deprecated.determin_location import (
     FiltersStrategy,
     Location,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     choice_gender,
     show_dating_filters,
 )

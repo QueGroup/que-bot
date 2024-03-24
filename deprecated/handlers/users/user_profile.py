@@ -15,7 +15,7 @@ from src.infrastructure.db_api import (
 from src.tgbot.keyboards.inline.menu_profile_inline import (
     get_profile_keyboard,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     display_profile,
 )
 

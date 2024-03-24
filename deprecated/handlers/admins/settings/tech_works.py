@@ -22,7 +22,7 @@ from src.tgbot.keyboards.admin.main_menu import (
 from src.tgbot.keyboards.inline.admin_inline import (
     tech_works_keyboard,
 )
-from src.tgbot.services.app.statistics import (
+from deprecated.statistics import (
     get_statistics,
 )
 

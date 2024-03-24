@@ -19,7 +19,7 @@ from src.tgbot.handlers.users.back import (
 from src.tgbot.keyboards.admin.inline.reply_menu import (
     logs_keyboard,
 )
-from src.tgbot.services.app.data_operations import (
+from deprecated.data_operations import (
     backup_configs,
     dump_users_to_file,
 )

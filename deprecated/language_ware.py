@@ -5,20 +5,15 @@ from typing import (
 from aiogram import (
     types,
 )
-from aiogram.contrib.middlewares.i18n import (
-    I18nMiddleware,
-)
+from aiogram.utils.i18n import I18nMiddleware
 
-from src.infrastructure.db_api import (
-    db_commands,
-)
 from src.tgbot.config import (
     LOCALES_DIR,
     load_config,
 )
 
 
-async def get_lang(user_id) -> str | None:
+async def get_lang(user_id, db_commands=None) -> str | None:
     user = await db_commands.select_user(telegram_id=user_id)
     return user.language if user else None
 

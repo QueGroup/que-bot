@@ -25,7 +25,7 @@ from src.infrastructure.db_api import (
 from src.tgbot.keyboards.inline.language_inline import (
     language_keyboard,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     check_user_in_db,
     delete_message,
     registration_menu,

@@ -58,14 +58,14 @@ from src.tgbot.keyboards.inline.registration_inline import (
 from src.tgbot.services.app.profanityFilter import (
     censored_message,
 )
-from src.tgbot.services.app.determin_location import (
+from deprecated.determin_location import (
     Location,
     RegistrationStrategy,
 )
-from src.tgbot.services.app.message_operations import (
+from deprecated.message_operations import (
     choice_gender,
 )
-from src.tgbot.services.app.photo_operations import (
+from deprecated.photo_operations import (
     saving_censored_photo,
     saving_normal_photo,
 )

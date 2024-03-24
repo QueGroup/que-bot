@@ -47,11 +47,11 @@ from src.tgbot.keyboards.inline.change_data_profile_inline import (
 from src.tgbot.keyboards.inline.main_menu_inline import (
     start_keyboard,
 )
-from src.tgbot.services.app.determin_location import (
+from deprecated.determin_location import (
     Location,
     RegistrationStrategy,
 )
-from src.tgbot.services.app.photo_operations import (
+from deprecated.photo_operations import (
     saving_censored_photo,
     update_normal_photo,
 )
