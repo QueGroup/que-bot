@@ -1,19 +1,15 @@
-from aiogram import (
-    types,
-)
-from aiogram.dispatcher.filters import (
-    BoundFilter,
-)
+from aiogram.filters import BaseFilter
 from aiogram.types import (
     Message,
 )
 
 
-class IsPrivate(BoundFilter):
-    async def check(self, message: Message) -> bool:
-        return types.ChatType.PRIVATE == message.chat.type
+class ChatTypeFilter(BaseFilter):
+    def __init__(self, chat_type: str | list):
+        self.chat_type = chat_type
 
-
-class IsGroup(BoundFilter):
-    async def check(self, message: types.Message) -> bool:
-        return message.chat.type in (types.ChatType.GROUP, types.ChatType.SUPERGROUP)
+    async def __call__(self, message: Message) -> bool:
+        if isinstance(self.chat_type, str):
+            return message.chat.type == self.chat_type
+        else:
+            return message.chat.type in self.chat_type

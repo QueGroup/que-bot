@@ -1,7 +1,13 @@
-from . import (
-    admins,
-    errors,
-    groups,
-    users,
-    echo_handler,
+from .start import (
+    start_router,
+)
+
+routers_list = [
+    start_router,
+
+    # echo_router,  # echo_router must be last
+]
+
+__all__ = (
+    "routers_list",
 )
