@@ -3,20 +3,20 @@ import asyncio
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     bot,
     dp,
 )
+
+from src.infrastructure.db_api import (
+    db_commands,
+)
 from src.tgbot.config import (
     load_config,
 )
-from src.tgbot.filters.IsAdminFilter import (
+from src.tgbot.filters.is_admin_filter import (
     IsAdmin,
-)
-from src.infrastructure.db_api import (
-    db_commands,
 )
 from src.tgbot.keyboards.inline.main_menu_inline import (
     start_keyboard,

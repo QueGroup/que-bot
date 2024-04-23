@@ -10,12 +10,12 @@ from aiogram.types import (
 from aiogram.utils.markdown import (
     hcode,
 )
-
 from loader import (
     _,
     dp,
     logger,
 )
+
 from src.tgbot.keyboards.inline.main_menu_inline import (
     start_keyboard,
 )

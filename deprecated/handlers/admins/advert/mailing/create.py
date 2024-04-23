@@ -15,18 +15,18 @@ from aiogram.utils.markdown import (
     escape_md,
     quote_html,
 )
-
 from loader import (
     _,
     bot,
     dp,
     logger,
 )
-from src.tgbot.filters.IsAdminFilter import (
-    IsAdmin,
-)
+
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.filters.is_admin_filter import (
+    IsAdmin,
 )
 from src.tgbot.keyboards.admin.inline.mailing import (
     add_buttons_keyboard,

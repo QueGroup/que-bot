@@ -6,20 +6,20 @@ from aiogram.dispatcher import (
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     dp,
     wallet,
 )
-from src.tgbot.config import (
-    load_config,
+
+from src.infrastructure.Yoomoney.types import (
+    PaymentSource,
 )
 from src.infrastructure.db_api import (
     db_commands,
 )
-from src.infrastructure.yoomoney.types import (
-    PaymentSource,
+from src.tgbot.config import (
+    load_config,
 )
 from src.tgbot.keyboards.inline.main_menu_inline import (
     start_keyboard,
@@ -44,7 +44,7 @@ async def get_payment_menu(call: CallbackQuery) -> None:
     )
 
 
-@dp.callback_query_handler(text="yoomoney")
+@dp.callback_query_handler(text="Yoomoney")
 async def get_payment(call: CallbackQuery, state: FSMContext) -> None:
     payment_form = await wallet.create_payment_form(
         amount_rub=2,
@@ -64,7 +64,7 @@ async def get_payment(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
-@dp.callback_query_handler(text="yoomoney:check_payment", state="payment")
+@dp.callback_query_handler(text="Yoomoney:check_payment", state="payment")
 async def check_payment(call: CallbackQuery, state: FSMContext) -> None:
     data = await state.get_data()
     payment_is_completed: bool = await wallet.check_payment_on_successful(

@@ -7,26 +7,29 @@ from aiogram.types import (
 from django.db import (
     IntegrityError,
 )
-
 from loader import (
     _,
     bot,
     dp,
     logger,
 )
-from src.tgbot.config import (
-    load_config,
+
+from deprecated.get_next_user_func import (
+    get_next_user,
+)
+from deprecated.message_operations import (
+    delete_message,
 )
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.config import (
+    load_config,
 )
 from src.tgbot.keyboards.inline.questionnaires_inline import (
     action_keyboard,
     action_reciprocity_keyboard,
     action_report_keyboard,
-)
-from deprecated.message_operations import (
-    delete_message,
 )
 from src.tgbot.services.dating import (
     ChooseReportReason,
@@ -40,9 +43,6 @@ from src.tgbot.services.dating import (
     StartFindingReachLimit,
     StartFindingSuccess,
     StoppedAction,
-)
-from deprecated.get_next_user_func import (
-    get_next_user,
 )
 
 

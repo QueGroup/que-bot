@@ -1,21 +1,21 @@
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     dp,
+)
+
+from deprecated.message_operations import (
+    handle_guide_callback,
+    information_menu,
+    send_photo_with_caption,
 )
 from src.tgbot.keyboards.inline.back_inline import (
     only_back_keyboard,
 )
 from src.tgbot.keyboards.inline.guide_inline import (
     guide_callback,
-)
-from deprecated.message_operations import (
-    handle_guide_callback,
-    information_menu,
-    send_photo_with_caption,
 )
 
 

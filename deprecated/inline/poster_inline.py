@@ -1,17 +1,13 @@
-from typing import (
-    Union,
-)
-
 from aiogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
 )
-
 from loader import (
     _,
 )
+
 from src.infrastructure.db_api import (
     db_commands,
 )

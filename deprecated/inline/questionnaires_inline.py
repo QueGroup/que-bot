@@ -5,7 +5,6 @@ from aiogram.types import (
 from aiogram.utils.callback_data import (
     CallbackData,
 )
-
 from loader import (
     _,
 )

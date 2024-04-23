@@ -7,16 +7,16 @@ from aiogram.types import (
     CallbackQuery,
     ReplyKeyboardRemove,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.handlers.users.back import (
-    delete_message,
-)
+
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.handlers.users.back import (
+    delete_message,
 )
 from src.tgbot.keyboards.default.get_contact_default import (
     contact_keyboard,

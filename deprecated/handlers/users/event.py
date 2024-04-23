@@ -19,31 +19,13 @@ from aiogram.utils.exceptions import (
 from django.db import (
     DataError,
 )
-
 from loader import (
     _,
     bot,
     dp,
     logger,
 )
-from src.tgbot.config import (
-    load_config,
-)
-from src.infrastructure.YandexMap.exceptions import (
-    NothingFound,
-)
-from src.infrastructure.db_api import (
-    db_commands,
-)
-from src.tgbot.keyboards.inline.calendar import (
-    SimpleCalendar,
-    calendar_callback,
-    search_cb,
-)
-from src.tgbot.keyboards.inline.poster_inline import (
-    cancel_registration_keyboard,
-    poster_keyboard,
-)
+
 from deprecated.determin_location import (
     EventStrategy,
     Location,
@@ -53,6 +35,24 @@ from deprecated.extra_features import (
 )
 from deprecated.templates_messages import (
     ME,
+)
+from src.infrastructure.YandexMap.exceptions import (
+    NothingFound,
+)
+from src.infrastructure.db_api import (
+    db_commands,
+)
+from src.tgbot.config import (
+    load_config,
+)
+from src.tgbot.keyboards.inline.calendar import (
+    SimpleCalendar,
+    calendar_callback,
+    search_cb,
+)
+from src.tgbot.keyboards.inline.poster_inline import (
+    cancel_registration_keyboard,
+    poster_keyboard,
 )
 
 

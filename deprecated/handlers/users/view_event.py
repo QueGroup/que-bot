@@ -4,20 +4,20 @@ from aiogram.dispatcher import (
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     bot,
     dp,
 )
-from src.tgbot.keyboards.inline.poster_inline import (
-    poster_keyboard,
-)
+
 from deprecated.extra_features import (
     add_events_to_user,
     check_event_date,
     create_form,
     get_next_random_event_id,
+)
+from src.tgbot.keyboards.inline.poster_inline import (
+    poster_keyboard,
 )
 
 

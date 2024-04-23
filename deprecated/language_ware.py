@@ -5,7 +5,9 @@ from typing import (
 from aiogram import (
     types,
 )
-from aiogram.utils.i18n import I18nMiddleware
+from aiogram.utils.i18n import (
+    I18nMiddleware,
+)
 
 from src.tgbot.config import (
     LOCALES_DIR,

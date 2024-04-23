@@ -7,16 +7,16 @@ from aiogram.types import (
     CallbackQuery,
     Message,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.handlers.users.back import (
-    delete_message,
-)
+
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.handlers.users.back import (
+    delete_message,
 )
 from src.tgbot.keyboards.inline.poster_inline import (
     change_datas_keyboard,

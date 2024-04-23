@@ -6,17 +6,17 @@ from aiogram.dispatcher import (
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.infrastructure.db_api import (
-    db_commands,
-)
+
 from deprecated.extra_features import (
     create_form,
     get_next_registration,
+)
+from src.infrastructure.db_api import (
+    db_commands,
 )
 
 

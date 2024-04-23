@@ -4,15 +4,15 @@ from aiogram.dispatcher.filters import (
 from aiogram.types import (
     Message,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.filters.FiltersChat import (
+
+from src.tgbot.filters.filters_chat import (
     IsGroup,
 )
-from src.tgbot.filters.IsAdminFilter import (
+from src.tgbot.filters.is_admin_filter import (
     IsAdmin,
 )
 

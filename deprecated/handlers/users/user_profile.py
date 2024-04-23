@@ -1,22 +1,22 @@
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.handlers.users.back import (
-    delete_message,
+
+from deprecated.message_operations import (
+    display_profile,
 )
 from src.infrastructure.db_api import (
     db_commands,
 )
+from src.tgbot.handlers.users.back import (
+    delete_message,
+)
 from src.tgbot.keyboards.inline.menu_profile_inline import (
     get_profile_keyboard,
-)
-from deprecated.message_operations import (
-    display_profile,
 )
 
 

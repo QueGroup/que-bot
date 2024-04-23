@@ -1,25 +1,25 @@
 from aiogram import (
     types,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.filters.IsAdminFilter import (
-    IsAdmin,
+
+from deprecated.create_forms_funcs import (
+    monitoring_questionnaire,
 )
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.filters.is_admin_filter import (
+    IsAdmin,
 )
 from src.tgbot.keyboards.inline.admin_inline import (
     start_monitoring_keyboard,
 )
 from src.tgbot.keyboards.inline.questionnaires_inline import (
     action_keyboard_monitoring,
-)
-from deprecated.create_forms_funcs import (
-    monitoring_questionnaire,
 )
 
 

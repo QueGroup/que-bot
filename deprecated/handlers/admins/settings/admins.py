@@ -5,19 +5,16 @@ from aiogram.types import (
     CallbackQuery,
     Message,
 )
-
 from loader import (
     dp,
 )
+
 from src.tgbot.config import (
     change_env,
     load_config,
 )
-from src.tgbot.filters.IsAdminFilter import (
+from src.tgbot.filters.is_admin_filter import (
     IsAdmin,
-)
-from src.tgbot.services.app.set_bot_commands import (
-    set_default_commands,
 )
 from src.tgbot.keyboards.admin.inline.reply_menu import (
     admin_cancel_keyboard,
@@ -26,7 +23,12 @@ from src.tgbot.keyboards.admin.inline.reply_menu import (
 from src.tgbot.keyboards.admin.inline.setting import (
     add_admins_keyboard,
 )
-from src.tgbot.services.app.states import AdminsActions
+from src.tgbot.misc.states import (
+    AdminsActions,
+)
+from src.tgbot.services.app.set_bot_commands import (
+    set_default_commands,
+)
 
 
 @dp.callback_query_handler(IsAdmin(), text="admin:admins")

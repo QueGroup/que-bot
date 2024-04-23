@@ -7,18 +7,18 @@ from aiogram.types import (
 from aiogram.utils.exceptions import (
     BadRequest,
 )
-
 from loader import (
     bot,
 )
-from src.tgbot.keyboards.inline.questionnaires_inline import (
-    questionnaires_keyboard,
-)
+
 from deprecated.get_next_user_func import (
     get_next_user,
 )
 from deprecated.send_form_func import (
     send_questionnaire,
+)
+from src.tgbot.keyboards.inline.questionnaires_inline import (
+    questionnaires_keyboard,
 )
 
 

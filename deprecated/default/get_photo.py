@@ -2,7 +2,6 @@ from aiogram.types import (
     KeyboardButton,
     ReplyKeyboardMarkup,
 )
-
 from loader import (
     _,
 )

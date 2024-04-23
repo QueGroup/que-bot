@@ -11,24 +11,24 @@ from aiogram.types import (
 from aiogram.utils.exceptions import (
     BadRequest,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.filters import (
-    IsPrivate,
-)
-from src.infrastructure.db_api import (
-    db_commands,
-)
-from src.tgbot.keyboards.inline.language_inline import (
-    language_keyboard,
-)
+
 from deprecated.message_operations import (
     check_user_in_db,
     delete_message,
     registration_menu,
+)
+from src.infrastructure.db_api import (
+    db_commands,
+)
+from src.tgbot.filters import (
+    IsPrivate,
+)
+from src.tgbot.keyboards.inline.language_inline import (
+    language_keyboard,
 )
 
 

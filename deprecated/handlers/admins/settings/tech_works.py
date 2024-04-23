@@ -5,25 +5,25 @@ from aiogram.types import (
     CallbackQuery,
     Message,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.filters.IsAdminFilter import (
-    IsAdmin,
+
+from deprecated.statistics import (
+    get_statistics,
 )
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.filters.is_admin_filter import (
+    IsAdmin,
 )
 from src.tgbot.keyboards.admin.main_menu import (
     admin_keyboard,
 )
 from src.tgbot.keyboards.inline.admin_inline import (
     tech_works_keyboard,
-)
-from deprecated.statistics import (
-    get_statistics,
 )
 
 

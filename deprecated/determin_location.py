@@ -9,20 +9,19 @@ from typing import (
 from aiogram.types import (
     Message,
 )
-
 from loader import (
     _,
     client,
     logger,
 )
+
 from src.infrastructure.YandexMap.exceptions import (
     NothingFound,
 )
-
 from src.tgbot.keyboards.inline.registration_inline import (
     confirm_keyboard,
 )
-from src.tgbot.services.app.AsyncObj import (
+from src.tgbot.misc.async_obj import (
     AsyncObj,
 )
 

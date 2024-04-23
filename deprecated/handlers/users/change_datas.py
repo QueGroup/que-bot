@@ -18,21 +18,32 @@ from aiogram.utils.markdown import (
 from django.db import (
     DataError,
 )
+from loader import (
+    _,
+    dp,
+    logger,
+)
 
+from deprecated.determin_location import (
+    Location,
+    RegistrationStrategy,
+)
+from deprecated.photo_operations import (
+    saving_censored_photo,
+    update_normal_photo,
+)
 from src.infrastructure.NudeNet.predictor import (
     classification_image,
     generate_censored_image,
+)
+from src.infrastructure.NudeNet.profanity_filter import (
+    censored_message,
 )
 from src.infrastructure.YandexMap.exceptions import (
     NothingFound,
 )
 from src.infrastructure.db_api import (
     db_commands,
-)
-from loader import (
-    _,
-    dp,
-    logger,
 )
 from src.tgbot.handlers.users.back import (
     delete_message,
@@ -47,18 +58,9 @@ from src.tgbot.keyboards.inline.change_data_profile_inline import (
 from src.tgbot.keyboards.inline.main_menu_inline import (
     start_keyboard,
 )
-from deprecated.determin_location import (
-    Location,
-    RegistrationStrategy,
+from src.tgbot.misc.states import (
+    NewData,
 )
-from deprecated.photo_operations import (
-    saving_censored_photo,
-    update_normal_photo,
-)
-from src.tgbot.services.app.profanityFilter import (
-    censored_message,
-)
-from src.tgbot.services.app.states import NewData
 
 
 @dp.callback_query_handler(text="change_profile")

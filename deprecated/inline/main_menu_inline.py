@@ -4,15 +4,15 @@ from aiogram.types import (
     InlineKeyboardMarkup,
     Message,
 )
-
 from loader import (
     _,
 )
-from src.tgbot.config import (
-    load_config,
-)
+
 from src.infrastructure.db_api import (
     db_commands,
+)
+from src.tgbot.config import (
+    load_config,
 )
 
 

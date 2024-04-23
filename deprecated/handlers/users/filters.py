@@ -13,13 +13,22 @@ from aiogram.types import (
 from aiogram.utils.exceptions import (
     BadRequest,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.handlers.users.back import (
-    delete_message,
+
+from deprecated.determin_location import (
+    FiltersStrategy,
+    Location,
+)
+from deprecated.inline.filters_inline import (
+    event_filters_keyboard,
+    filters_keyboard,
+)
+from deprecated.message_operations import (
+    choice_gender,
+    show_dating_filters,
 )
 from src.infrastructure.YandexMap.exceptions import (
     NothingFound,
@@ -27,20 +36,11 @@ from src.infrastructure.YandexMap.exceptions import (
 from src.infrastructure.db_api import (
     db_commands,
 )
+from src.tgbot.handlers.users.back import (
+    delete_message,
+)
 from src.tgbot.keyboards.inline.change_data_profile_inline import (
     gender_keyboard,
-)
-from deprecated.inline.filters_inline import (
-    event_filters_keyboard,
-    filters_keyboard,
-)
-from deprecated.determin_location import (
-    FiltersStrategy,
-    Location,
-)
-from deprecated.message_operations import (
-    choice_gender,
-    show_dating_filters,
 )
 
 

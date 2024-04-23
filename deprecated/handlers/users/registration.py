@@ -22,16 +22,30 @@ from asyncpg import (
 from django.db import (
     DataError,
 )
-
 from loader import (
     _,
     client,
     dp,
     logger,
 )
+
+from deprecated.determin_location import (
+    Location,
+    RegistrationStrategy,
+)
+from deprecated.message_operations import (
+    choice_gender,
+)
+from deprecated.photo_operations import (
+    saving_censored_photo,
+    saving_normal_photo,
+)
 from src.infrastructure.NudeNet.predictor import (
     classification_image,
     generate_censored_image,
+)
+from src.infrastructure.NudeNet.profanity_filter import (
+    censored_message,
 )
 from src.infrastructure.YandexMap.exceptions import (
     NothingFound,
@@ -54,22 +68,9 @@ from src.tgbot.keyboards.inline.change_data_profile_inline import (
 from src.tgbot.keyboards.inline.registration_inline import (
     second_registration_keyboard,
 )
-
-from src.tgbot.services.app.profanityFilter import (
-    censored_message,
+from src.tgbot.misc.states import (
+    RegData,
 )
-from deprecated.determin_location import (
-    Location,
-    RegistrationStrategy,
-)
-from deprecated.message_operations import (
-    choice_gender,
-)
-from deprecated.photo_operations import (
-    saving_censored_photo,
-    saving_normal_photo,
-)
-from src.tgbot.services.app.states import RegData
 
 
 @dp.callback_query_handler(text="registration")

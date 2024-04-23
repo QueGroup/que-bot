@@ -10,7 +10,6 @@ from aiogram.utils.exceptions import (
     TelegramAPIError,
     Unauthorized,
 )
-
 from loader import (
     dp,
 )

@@ -5,12 +5,12 @@ from aiogram.types import (
     CallbackQuery,
     Message,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.filters.IsAdminFilter import (
+
+from src.tgbot.filters.is_admin_filter import (
     IsAdmin,
 )
 from src.tgbot.keyboards.admin.inline.mailing import (

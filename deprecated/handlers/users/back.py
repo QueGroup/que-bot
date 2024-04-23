@@ -9,32 +9,32 @@ from aiogram.dispatcher import (
 from aiogram.types import (
     CallbackQuery,
 )
-
 from loader import (
     _,
     dp,
 )
-from src.tgbot.handlers.users.event import (
-    view_meetings_handler,
-    view_own_event,
-)
-from src.infrastructure.db_api import (
-    db_commands,
-)
-from src.tgbot.keyboards.inline.admin_inline import (
-    unban_user_keyboard,
-)
+
 from deprecated.inline.filters_inline import (
     filters_keyboard,
-)
-from src.tgbot.keyboards.inline.menu_profile_inline import (
-    get_profile_keyboard,
 )
 from deprecated.message_operations import (
     delete_message,
     display_profile,
     information_menu,
     registration_menu,
+)
+from src.infrastructure.db_api import (
+    db_commands,
+)
+from src.tgbot.handlers.users.event import (
+    view_meetings_handler,
+    view_own_event,
+)
+from src.tgbot.keyboards.inline.admin_inline import (
+    unban_user_keyboard,
+)
+from src.tgbot.keyboards.inline.menu_profile_inline import (
+    get_profile_keyboard,
 )
 
 

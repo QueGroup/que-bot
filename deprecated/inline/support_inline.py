@@ -1,8 +1,4 @@
 import random
-from typing import (
-    Optional,
-    Union,
-)
 
 from aiogram.types import (
     InlineKeyboardButton,
@@ -11,11 +7,11 @@ from aiogram.types import (
 from aiogram.utils.callback_data import (
     CallbackData,
 )
-
 from loader import (
     _,
     dp,
 )
+
 from src.tgbot.config import (
     load_config,
 )

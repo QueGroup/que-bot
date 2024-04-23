@@ -6,11 +6,15 @@ from aiogram.types import (
     InputFile,
     Message,
 )
-
 from loader import (
     dp,
 )
-from src.tgbot.filters.IsAdminFilter import (
+
+from deprecated.data_operations import (
+    backup_configs,
+    dump_users_to_file,
+)
+from src.tgbot.filters.is_admin_filter import (
     IsAdmin,
 )
 from src.tgbot.handlers.users.back import (
@@ -18,10 +22,6 @@ from src.tgbot.handlers.users.back import (
 )
 from src.tgbot.keyboards.admin.inline.reply_menu import (
     logs_keyboard,
-)
-from deprecated.data_operations import (
-    backup_configs,
-    dump_users_to_file,
 )
 
 
