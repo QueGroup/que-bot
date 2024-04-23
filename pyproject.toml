@@ -8,46 +8,32 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-aiogram = "2.25.1"
-environs = "10.2.0"
-asyncpg = "0.29.0"
-Django = "4.2"
-psycopg2-binary = "2.9.9"
-jsonfield = ">=3.1.0,<3.2.0"
-asgiref = "3.7.2"
-uuid = ">=1.30,<2.0"
-pip = "23.3.2"
-setuptools = "69.0.3"
-django-jazzmin = ">=2.6.0,<2.7.0"
+aiogram = "^3.4.1"
+environs = "^10.2.0"
 better-profanity = ">=0.7.0,<0.8.0"
-pytest = "7.4.4"
-aiohttp = "<3.9.0"
-async-lru = "2.0.4"
-pytest-asyncio = "0.23.3"
-apscheduler = "3.10.4"
-nudenet = "3.0.8"
-yarl = "1.9.4"
-aiofiles = "23.2.1"
-pre-commit = "3.6.0"
-testresources = "^2.0.1"
-pydantic = "1.10.13"
-redis = "5.0.1"
+pytest = "^7.4.4"
+aiohttp = "<3.9.3"
+apscheduler = "^3.10.4"
+nudenet = "^3.0.8"
+pre-commit = "^3.6.0"
+pydantic = "^2.4.1"
+redis = "^5.0.1"
 betterlogging = ">=0.2.1,<0.3.0"
-flake8 = "7.0.0"
-black = "23.12.1"
+flake8 = "^7.0.0"
+black = "^23.12.1"
 mypy = "^1.8.0"
 isort = "^5.13.2"
 deptry = "^0.12.0"
 ruff = "^0.1.14"
 pip-audit = "^2.7.0"
+que-sdk = "^0.1.0"
 
 [tool.black]
 line-length = 99
 exclude = [
     "venv",
-    "django_project/telegrambot/common/migrations",
-    "django_project/telegrambot/usersmanage/migrations",
-    ".git"
+    ".git",
+    "deprecate/"
 ]
 target-version = ['py311']
 
@@ -64,6 +50,7 @@ disallow_untyped_calls = true
 warn_redundant_casts = true
 warn_unused_configs = true
 strict_equality = true
+exclude = ["deprecated"]
 
 [tool.isort]
 profile = "black"
@@ -77,7 +64,7 @@ include_trailing_comma = true
 line_length = 99
 use_parentheses = true
 known_third_party = ['django', 'rest_framework_extensions', 'aiogram']
-known_first_party = ["common", "usersmanage",]
+known_first_party = ["common", "usersmanage", ]
 skip = ["__init__.py", "app.py"]
 
 [tool.ruff]
