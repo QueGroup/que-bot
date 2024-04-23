@@ -1,11 +1,13 @@
-from aiogram.filters import BaseFilter
+from aiogram.filters import (
+    BaseFilter,
+)
 from aiogram.types import (
     Message,
 )
 
 
 class ChatTypeFilter(BaseFilter):
-    def __init__(self, chat_type: str | list):
+    def __init__(self, chat_type: str | list) -> None:
         self.chat_type = chat_type
 
     async def __call__(self, message: Message) -> bool:

@@ -1,11 +1,11 @@
 import asyncio
 from typing import (
-    NoReturn,
+    NoReturn, Coroutine, Any, Generator,
 )
 
 
 class AsyncObj:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         """
         Init.
 
@@ -26,10 +26,10 @@ class AsyncObj:
         await self.__ainit__(*self.__stored_args[0], **self.__stored_args[1])
         return self
 
-    def __await__(self):
+    def __await__(self) -> Generator[Any, None, "AsyncObj"]:
         return self.__initobj().__await__()
 
-    def __init_subclass__(cls, **kwargs) -> NoReturn:
+    def __init_subclass__(cls, **kwargs) -> None:
         # __ainit__ must be async
         assert asyncio.iscoroutinefunction(cls.__ainit__)
 

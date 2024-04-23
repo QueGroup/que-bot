@@ -1,15 +1,21 @@
 import asyncio
 import logging
-from typing import Union
+from typing import (
+    Union,
+)
 
-from aiogram import Bot
-from aiogram import exceptions
-from aiogram.types import InlineKeyboardMarkup
+from aiogram import (
+    Bot,
+    exceptions,
+)
+from aiogram.types import (
+    InlineKeyboardMarkup,
+)
 
 
 async def send_message(
         bot: Bot,
-        user_id: Union[int, str],
+        user_id: int | str,
         text: str,
         disable_notification: bool = False,
         reply_markup: InlineKeyboardMarkup = None,
@@ -32,7 +38,7 @@ async def send_message(
             reply_markup=reply_markup,
         )
     except exceptions.TelegramBadRequest as e:
-        logging.error("Telegram server says - Bad Request: chat not found")
+        logging.error("Telegram server says - Bad Request: chat not found {e}".format(e=e))
     except exceptions.TelegramForbiddenError:
         logging.error(f"Target [ID:{user_id}]: got TelegramForbiddenError")
     except exceptions.TelegramRetryAfter as e:
