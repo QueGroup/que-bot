@@ -17,4 +17,5 @@ __all__ = (
     "handle_login_t_me",
     "handle_signup",
     "handle_not_founded_user",
+    "handle_send_start_message"
 )
