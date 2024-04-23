@@ -27,6 +27,9 @@ isort:
 	@echo "🔄 Running isort..."
 	@poetry run isort $(git ls-files '*.py')
 
+black:
+    @poetry run black $(git ls-files '*.py')
+
 # Audit packages
 audit:
 	@echo "🔍 Auditing packages..."
