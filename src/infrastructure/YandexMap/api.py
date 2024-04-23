@@ -5,14 +5,14 @@ from typing import (
 
 import aiohttp
 
-from src.infrastructure.YandexMap.exceptions import (
+from .exceptions import (
     InvalidKey,
     NothingFound,
     UnexpectedResponse,
 )
 
 
-class Client:
+class YaClient:
     __slots__ = ("api_key",)
     api_key: str
 
@@ -22,8 +22,8 @@ class Client:
     async def _request(self, address: str) -> Any:
         async with aiohttp.ClientSession() as session:
             async with session.get(
-                url="https://geocode-maps.yandex.ru/1.x/",
-                params=dict(format="json", apikey=self.api_key, geocode=address),
+                    url="https://geocode-maps.yandex.ru/1.x/",
+                    params=dict(format="json", apikey=self.api_key, geocode=address),
             ) as response:
                 if response.status == 200:
                     a = await response.json()

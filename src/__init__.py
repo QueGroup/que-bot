@@ -1,4 +1,6 @@
-from . import tgbot
+from . import (
+    tgbot,
+)
 
 __all__ = (
     "tgbot",

@@ -1,15 +1,14 @@
 import pathlib
-from typing import (
-    Union,
+
+from nudenet import (
+    NudeDetector,
 )
 
-from loader import (
-    detector,
-)
+detector = NudeDetector()
 
 
 async def classification_image(image_path: str | pathlib.Path) -> list[dict]:
-    return detector.detect(image_path)
+    return detector.detect(image_path=image_path)
 
 
 async def generate_censored_image(
