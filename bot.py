@@ -1,20 +1,40 @@
 import asyncio
 import logging
 
-import betterlogging as bl
 from aiogram import (
-    Dispatcher, Bot,
+    Bot,
+    Dispatcher,
 )
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
+from aiogram.client.default import (
+    DefaultBotProperties,
+)
+from aiogram.enums import (
+    ParseMode,
+)
+from aiogram.fsm.storage.memory import (
+    MemoryStorage,
+)
+from aiogram.fsm.storage.redis import (
+    DefaultKeyBuilder,
+    RedisStorage,
+)
+import betterlogging as bl
+from que_sdk import (
+    QueClient,
+)
 
-from src.tgbot.config import Config, load_config
-from src.tgbot.handlers import routers_list
-from src.tgbot.middlewares import ConfigMiddleware
-from src.tgbot.services.app import (
-    broadcaster
+from src.tgbot.config import (
+    Config,
+    load_config,
+)
+from src.tgbot.handlers import (
+    routers_list,
+)
+from src.tgbot.middlewares import (
+    MiscMiddleware,
+)
+from src.tgbot.services import (
+    broadcaster,
 )
 
 
@@ -22,26 +42,7 @@ async def on_startup(bot: Bot, admin_ids: list[int]) -> None:
     await broadcaster.broadcast(bot, admin_ids, "Бот запущен")
 
 
-def register_global_middlewares(
-        dp: Dispatcher,
-        config: Config
-) -> None:
-    middleware_types = [
-        ConfigMiddleware(config)
-        # ThrottlingMiddleware(),
-        # LinkCheckMiddleware(),
-        # SupportMiddleware(),
-        # IsMaintenance(),
-        # SchedulerMiddleware(scheduler),
-        # BanMiddleware(),
-        # LogMiddleware(),
-    ]
-    for middleware_type in middleware_types:
-        dp.message.outer_middleware(middleware_type)
-        dp.callback_query.outer_middleware(middleware_type)
-
-
-def setup_logging():
+def setup_logging() -> None:
     """
     Set up logging configuration for the application.
 
@@ -67,7 +68,21 @@ def setup_logging():
     logger.info("Starting bot")
 
 
-def get_storage(config):
+def register_global_middlewares(
+        dp: Dispatcher,
+        config: Config,
+        client: QueClient
+) -> None:
+    logging.info("Setup middlewares...")
+    middleware_types = [
+        MiscMiddleware(config, client),
+    ]
+    for middleware_type in middleware_types:
+        dp.message.outer_middleware(middleware_type)
+        dp.callback_query.outer_middleware(middleware_type)
+
+
+def get_storage(config: Config) -> MemoryStorage | RedisStorage:
     """
     Return storage based on the provided configuration.
 
@@ -87,18 +102,18 @@ def get_storage(config):
         return MemoryStorage()
 
 
-async def main():
+async def main() -> None:
     setup_logging()
 
     config = load_config()
     storage = get_storage(config)
-
+    client = QueClient()
     bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=storage)
 
     dp.include_routers(*routers_list)
 
-    register_global_middlewares(dp, config)
+    register_global_middlewares(dp, config, client)
 
     await on_startup(bot, config.tg_bot.admin_ids)
     await dp.start_polling(bot)
