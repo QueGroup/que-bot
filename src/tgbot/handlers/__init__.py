@@ -4,7 +4,6 @@ from .start import (
 
 routers_list = [
     start_router,
-
     # echo_router,  # echo_router must be last
 ]
 

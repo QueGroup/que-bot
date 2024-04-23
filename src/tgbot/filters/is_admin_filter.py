@@ -1,7 +1,9 @@
 from aiogram import (
     types,
 )
-from aiogram.filters import BaseFilter
+from aiogram.filters import (
+    BaseFilter,
+)
 
 from src.tgbot.config import (
     load_config,
