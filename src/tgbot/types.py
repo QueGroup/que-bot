@@ -5,7 +5,7 @@ from typing import (
 )
 
 from aiogram.types import (
-    Message,
+    TelegramObject,
 )
 
-Handler = Callable[[Message, dict[str, Any]], Awaitable[Any]]
+Handler = Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]]
