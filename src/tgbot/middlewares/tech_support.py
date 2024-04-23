@@ -1,12 +1,17 @@
 from typing import (
-    Dict, Any, )
+    Any,
+)
 
 from aiogram import (
     BaseMiddleware,
 )
-from aiogram.types import TelegramObject
+from aiogram.types import (
+    TelegramObject,
+)
 
-from src.tgbot.types import Handler
+from src.tgbot.types import (
+    Handler,
+)
 
 
 class SupportMiddleware(BaseMiddleware):
@@ -15,7 +20,7 @@ class SupportMiddleware(BaseMiddleware):
             self,
             handler: Handler,
             event: TelegramObject,
-            data: Dict[str, Any]
+            data: dict[str, Any]
     ) -> Any:
         pass
         # dispatcher = Dispatcher.get_current()

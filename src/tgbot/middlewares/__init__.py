@@ -19,7 +19,9 @@
 # from .Throttling import (
 #     ThrottlingMiddleware,
 # )
-from .Config import ConfigMiddleware
+from .config import (
+    MiscMiddleware,
+)
 
 __all__ = (
     # "AgentSupport",
@@ -31,5 +33,5 @@ __all__ = (
     # "ThrottlingMiddleware",
     # "SupportMiddleware",
     # "LinkCheckMiddleware",
-    "ConfigMiddleware",
+    "MiscMiddleware",
 )

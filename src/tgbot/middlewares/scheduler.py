@@ -1,18 +1,19 @@
 from typing import (
     Any,
-    Awaitable,
-    Callable,
-    Dict,
 )
 
-from aiogram.dispatcher.middlewares import (
+from aiogram import (
     BaseMiddleware,
 )
-from aiogram.types.base import (
+from aiogram.types import (
     TelegramObject,
 )
 from apscheduler.schedulers.asyncio import (
     AsyncIOScheduler,
+)
+
+from src.tgbot.types import (
+    Handler,
 )
 
 
@@ -21,11 +22,11 @@ class SchedulerMiddleware(BaseMiddleware):
         super(SchedulerMiddleware, self).__init__()
         self.scheduler = scheduler
 
-    def __call__(
+    async def __call__(
             self,
-            handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
+            handler: Handler,
             event: TelegramObject,
             data: dict[str, Any],
     ) -> Any:
         data["appscheduler"] = self.scheduler
-        return handler(event, data)
+        return await handler(event, data)
