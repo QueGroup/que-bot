@@ -25,17 +25,6 @@ Afterward, fill it with the required data.
 | IP                | str  | True       | ip for other services                                                                   |
 | TIMEZONE          | str  | True       | your time zone for working with the scheduler                                           |
 | MODERATE_CHAT     | str  | True       | telegram chat where the event will be moderated                                         |
-| POSTGRES_USER     | str  | True       | username of the database owner                                                          |
-| POSTGRES_PASSWORD | str  | True       | password from the database                                                              |
-| DB_HOST           | str  | True       | IP address of the database (Name of the service in the docker-compose.yml (User `db`)). |
-| DB_PORT           | str  | True       | the database port. Usually the db running on port `5432`                                |
-| POSTGRES_DB       | str  | True       | database name                                                                           |
-| SECRET_KEY        | str  | True       | secret key for django                                                                   |
-| API_KEY           | str  | True       | yandex api key for yandex map                                                           |
-| QIWI_KEY          | str  | True       | qiwi api key for receiving payments                                                     |
-| PHONE_NUMBER      | str  | True       | your phone number (need for qiwi)                                                       |
-| SECRET_P2         | str  | True       | public p2 key which allows you to issue an invoice and open a transfer form             |
-| USE_REDIS         | bool | False      | Optional parameter                                                                      |
 
 Once done, run the following command:
 
