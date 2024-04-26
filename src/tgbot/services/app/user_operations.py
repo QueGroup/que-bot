@@ -1,4 +1,6 @@
+import http
 from typing import (
+    Any,
     Literal,
 )
 
@@ -34,31 +36,42 @@ def welcoming_message(username: str, message_type: Literal["welcome", "greet_aut
     return messages[message_type]
 
 
-async def get_user_data(client: QueClient, storage: dict):
+async def get_user_data(client: QueClient, storage: dict) -> tuple[http.HTTPStatus, dict[str, Any]]:
     access_token = storage.get("access_token")
     status_code, response = await client.get_user_me(access_token)
 
     return status_code, response
 
 
-async def handle_send_start_message(username: str, message: types.Message):
+async def handle_send_start_message(username: str, message: types.Message) -> None:
     await message.answer(
         text=welcoming_message(username=username, message_type="greet_auth_user"),
         reply_markup=reply.main_menu()
     )
 
 
-async def handle_login_t_me(client: QueClient, config: Config, message: types.Message, state: FSMContext):
+async def handle_login_t_me(
+        client: QueClient,
+        config: Config,
+        message: types.Message,
+        state: FSMContext,
+) -> tuple[http.HTTPStatus, dict[str, Any]] | None:
     auth_data = security.generate_signature(telegram_id=message.from_user.id, secret_key=config.misc.secret_key)
     status_code, response = await client.login_t_me(data_in=TMELoginSchema(**auth_data))
-    access_token, refresh_toke = response.get('access_token'), response.get('refresh_token')
+    if status_code == http.HTTPStatus.OK:
+        access_token, refresh_toke = response.get('access_token'), response.get('refresh_token')
 
-    await state.update_data({"access_token": access_token, "refresh_token": refresh_toke})
+        await state.update_data({"access_token": access_token, "refresh_token": refresh_toke})
 
     return status_code, response
 
 
-async def handle_signup(client: QueClient, message: types.Message, state: FSMContext, config: Config):
+async def handle_signup(
+        client: QueClient,
+        message: types.Message,
+        state: FSMContext,
+        config: Config
+) -> tuple[http.HTTPStatus, dict[str, Any]]:
     username = message.from_user.username
     status_code, response = await client.signup(
         data_in=SignUpSchema(
@@ -76,7 +89,7 @@ async def handle_signup(client: QueClient, message: types.Message, state: FSMCon
     return status_code, response
 
 
-async def handle_not_founded_user(message: types.Message):
+async def handle_not_founded_user(message: types.Message) -> None:
     await message.answer(
         text="Мы не смогли найти ваш в аккаунт. Создайте новый или войдите с помощью логина и пароля",
         reply_markup=reply.login_signup_menu()

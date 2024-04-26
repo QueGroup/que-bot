@@ -2,7 +2,9 @@ import hashlib
 import hmac
 import secrets
 import time
-from typing import Any
+from typing import (
+    Any,
+)
 
 
 def generate_signature(telegram_id: int, secret_key: str) -> dict[str, Any]:

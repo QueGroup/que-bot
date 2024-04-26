@@ -1,4 +1,5 @@
 import pathlib
+from typing import Any
 
 from nudenet import (
     NudeDetector,
@@ -7,7 +8,7 @@ from nudenet import (
 detector = NudeDetector()
 
 
-async def classification_image(image_path: str | pathlib.Path) -> list[dict]:
+async def classification_image(image_path: str | pathlib.Path) -> list[dict[str, Any]]:
     return detector.detect(image_path=image_path)
 
 

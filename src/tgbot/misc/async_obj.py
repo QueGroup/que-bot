@@ -1,11 +1,12 @@
 import asyncio
 from typing import (
-    NoReturn, Coroutine, Any, Generator,
+    Any,
+    Generator,
 )
 
 
 class AsyncObj:
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
         Init.
 
@@ -15,7 +16,7 @@ class AsyncObj:
         self.__stored_args = args, kwargs
         self.async_initialized = False
 
-    async def __ainit__(self, *args, **kwargs) -> None:
+    async def __ainit__(self, *args: Any, **kwargs: Any) -> None:
         """Async constructor, you should implement this."""
 
     async def __initobj(self) -> "AsyncObj":
