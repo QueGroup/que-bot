@@ -1,5 +1,7 @@
 import http
-from typing import Any
+from typing import (
+    Any,
+)
 
 from aiogram import (
     F,
@@ -18,6 +20,9 @@ from que_sdk import (
 
 from src.tgbot.config import (
     Config,
+)
+from src.tgbot.keyboards import (
+    inline,
 )
 from src.tgbot.services import (
     get_user_data,
@@ -53,3 +58,11 @@ async def signup_handler(message: types.Message, state: FSMContext, **middleware
     client: QueClient = middleware_data.get("que-client")
     config: Config = middleware_data.get("config")
     await handle_signup(client=client, message=message, state=state, config=config)
+
+
+@start_router.message(F.text == "❔ О проекте")
+async def about_project_handler(message: types.Message) -> None:
+    text = (
+        "Наша система полностью open-source"
+    )
+    await message.answer(text=text, reply_markup=inline.about_project_menu())
