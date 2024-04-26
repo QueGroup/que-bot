@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "datingbot"
 version = "0.1.0"
-description = "A Telegram Bot with open source code, which implemented django and a dating system"
+description = "A Dating Telegram Bot with open source code"
 authors = ["David Dzhalaev <72649244+DavidRomanovizc@users.noreply.github.com>"]
 license = "Attribution-NonCommercial 3.0 Unported"
 readme = "README.md"
