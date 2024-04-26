@@ -28,6 +28,6 @@ def login_signup_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.row(
         types.KeyboardButton(text="✏️ Создать аккаунт"),
-        types.KeyboardButton(text="🛂 Войти в аккаунт", web_app=WebAppInfo(url="https://light-clouds-sleep.loca.lt")),
+        types.KeyboardButton(text="🛂 Войти в аккаунт", web_app=WebAppInfo(url="")),
     )
     return builder.as_markup(resize_keyboard=True)
