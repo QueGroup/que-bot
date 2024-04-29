@@ -30,7 +30,7 @@ class AsyncObj:
     def __await__(self) -> Generator[Any, None, "AsyncObj"]:
         return self.__initobj().__await__()
 
-    def __init_subclass__(cls, **kwargs) -> None:
+    def __init_subclass__(cls, **kwargs: Any) -> None:
         # __ainit__ must be async
         assert asyncio.iscoroutinefunction(cls.__ainit__)
 

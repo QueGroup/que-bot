@@ -1,5 +1,7 @@
 import pathlib
-from typing import Any
+from typing import (
+    Any,
+)
 
 from nudenet import (
     NudeDetector,

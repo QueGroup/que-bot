@@ -34,7 +34,7 @@ class YaClient:
                         f"status_code={response.status}, body={response.content}"
                     )
 
-    async def coordinates(self, address: str) -> tuple:
+    async def coordinates(self, address: str) -> tuple[float, float]:
         d = await self._request(address)
         data = d["GeoObjectCollection"]["featureMember"]
 
@@ -45,7 +45,7 @@ class YaClient:
         longitude, latitude = tuple(coordinates.split(" "))
         return longitude, latitude
 
-    async def address(self, longitude, latitude) -> dict[str, Any] | None:
+    async def address(self, longitude: float, latitude: float) -> dict[str, Any] | None:
         response = await self._request(f"{longitude},{latitude}")
         data = response.get("GeoObjectCollection", {}).get("featureMember", [])
 
