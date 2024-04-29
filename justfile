@@ -1,4 +1,4 @@
-set shell := ["powershell.exe", "-c"]
+# set shell := ["powershell.exe", "-c"]
 
 # Show help message
 PHONY: help
@@ -34,3 +34,7 @@ black:
 audit:
 	@echo "🔍 Auditing packages..."
 	@pip-audit .
+
+# Run pre-commit lint
+lint:
+    @pre-commit run --all-files
