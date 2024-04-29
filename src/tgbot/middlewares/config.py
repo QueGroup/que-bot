@@ -1,6 +1,5 @@
 from typing import (
     Any,
-    Dict,
 )
 
 from aiogram import (
@@ -30,7 +29,7 @@ class MiscMiddleware(BaseMiddleware):
             self,
             handler: Handler,
             event: TelegramObject,
-            data: Dict[str, Any],
+            data: dict[str, Any],
     ) -> Any:
         data["config"] = self.config
         data["que-client"] = self.client

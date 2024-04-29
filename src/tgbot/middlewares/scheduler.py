@@ -19,7 +19,7 @@ from src.tgbot.types import (
 
 class SchedulerMiddleware(BaseMiddleware):
     def __init__(self, scheduler: AsyncIOScheduler):
-        super(SchedulerMiddleware, self).__init__()
+        super().__init__()
         self.scheduler = scheduler
 
     async def __call__(

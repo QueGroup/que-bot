@@ -1,6 +1,5 @@
 from typing import (
     Any,
-    Dict,
 )
 
 from aiogram import (
@@ -20,7 +19,7 @@ class IsMaintenance(BaseMiddleware):
             self,
             handler: Handler,
             event: TelegramObject,
-            data: Dict[str, Any]
+            data: dict[str, Any]
     ) -> Any:
         pass
 
