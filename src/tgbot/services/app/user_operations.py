@@ -27,23 +27,30 @@ from src.tgbot.misc import (
 )
 
 
-def welcoming_message(username: str, message_type: Literal["welcome", "greet_auth_user"]) -> str:
+def welcoming_message(message_type: Literal["welcome", "greet_auth_user", "deactivate_user"], **kwargs: Any) -> str:
     messages = {
-        "welcome": "Добро пожаловать, {username}! Вы создали новый аккаунт".format(username=username),
-        "greet_auth_user": "Привет {username} вы вошли в аккаунт".format(username=username)
+        "welcome": "Добро пожаловать, {username}! Вы создали новый аккаунт",
+        "greet_auth_user": "Привет {username} вы вошли в аккаунт",
+        "deactivate_user": "Из-за отключения вашего аккаунта, доступ к приложению ограничен.\n"
+                           "Для возобновления работы с нашим приложением, пожалуйста, активируйте ваш аккаунт.\n"
+                           "Чтобы активировать аккаунт, используйте /reactivate",
     }
 
-    return messages[message_type]
+    return messages[message_type].format(**kwargs)
 
 
-async def get_user_data(client: QueClient, storage: dict) -> tuple[http.HTTPStatus, dict[str, Any]]:
+async def get_user_data(client: QueClient, storage: dict[str, Any]) -> tuple[http.HTTPStatus, dict[str, Any]]:
     access_token = storage.get("access_token")
     status_code, response = await client.get_user_me(access_token)
 
     return status_code, response
 
 
-async def handle_send_start_message(username: str, message: types.Message) -> None:
+async def handle_send_start_message(
+        message: types.Message,
+        response: dict[Any, Any]
+) -> None:
+    username = response.get("username") if response.get("username") is not None else message.from_user.username
     await message.answer(
         text=welcoming_message(username=username, message_type="greet_auth_user"),
         reply_markup=reply.main_menu()
