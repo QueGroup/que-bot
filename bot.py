@@ -1,5 +1,8 @@
 import asyncio
 import logging
+from typing import (
+    Sequence,
+)
 
 from aiogram import (
     Bot,
@@ -31,6 +34,8 @@ from src.tgbot.handlers import (
     routers_list,
 )
 from src.tgbot.middlewares import (
+    CheckActivateMiddleware,
+    IsAuthMiddleware,
     MiscMiddleware,
 )
 from src.tgbot.services import (
@@ -38,8 +43,8 @@ from src.tgbot.services import (
 )
 
 
-async def on_startup(bot: Bot, admin_ids: list[int]) -> None:
-    await broadcaster.broadcast(bot, admin_ids, "Бот запущен")
+async def on_startup(bot: Bot, admin_ids: Sequence[int]) -> None:
+    await broadcaster.broadcast(bot, list(admin_ids), "Бот запущен")
 
 
 def setup_logging() -> None:
@@ -76,6 +81,8 @@ def register_global_middlewares(
     logging.info("Setup middlewares...")
     middleware_types = [
         MiscMiddleware(config, client),
+        CheckActivateMiddleware(client),
+        IsAuthMiddleware(client)
     ]
     for middleware_type in middleware_types:
         dp.message.outer_middleware(middleware_type)
@@ -91,7 +98,6 @@ def get_storage(config: Config) -> MemoryStorage | RedisStorage:
 
     Returns:
         Storage: The storage object based on the configuration.
-
     """
     if config.tg_bot.use_redis:
         return RedisStorage.from_url(
@@ -108,7 +114,7 @@ async def main() -> None:
     config = load_config()
     storage = get_storage(config)
     client = QueClient()
-    bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher(storage=storage)
 
     dp.include_routers(*routers_list)
