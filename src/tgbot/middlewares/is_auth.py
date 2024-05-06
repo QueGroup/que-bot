@@ -40,14 +40,14 @@ class IsAuthMiddleware(BaseMiddleware):
         state = data.get("state")
         storage = await state.get_data()
 
-        if command != "/start":
-            try:
-                await self.on_process_event(storage=storage)
-                return await handler(event, data)
-            except CancelHandler:
-                await event.answer(text=self.text)
-        else:
+        if event.web_app_data is not None or command == "/start":
             return await handler(event, data)
+
+        try:
+            await self.on_process_event(storage=storage)
+            return await handler(event, data)
+        except CancelHandler:
+            await event.answer(text=self.text)
 
     async def on_process_event(self, storage: dict[str, Any]) -> Any:
         status_code, response = await self.client.get_user_me(
