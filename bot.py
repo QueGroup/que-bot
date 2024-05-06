@@ -26,6 +26,9 @@ from que_sdk import (
     QueClient,
 )
 
+from src.tgbot import (
+    services,
+)
 from src.tgbot.config import (
     Config,
     load_config,
@@ -34,17 +37,13 @@ from src.tgbot.handlers import (
     routers_list,
 )
 from src.tgbot.middlewares import (
-    CheckActivateMiddleware,
-    IsAuthMiddleware,
+    AccessControlMiddleware,
     MiscMiddleware,
-)
-from src.tgbot.services import (
-    broadcaster,
 )
 
 
 async def on_startup(bot: Bot, admin_ids: Sequence[int]) -> None:
-    await broadcaster.broadcast(bot, list(admin_ids), "Бот запущен")
+    await services.broadcaster.broadcast(bot, list(admin_ids), "Бот запущен")
 
 
 def setup_logging() -> None:
@@ -81,8 +80,7 @@ def register_global_middlewares(
     logging.info("Setup middlewares...")
     middleware_types = [
         MiscMiddleware(config, client),
-        CheckActivateMiddleware(client),
-        IsAuthMiddleware(client)
+        AccessControlMiddleware(client=client)
     ]
     for middleware_type in middleware_types:
         dp.message.outer_middleware(middleware_type)
@@ -121,6 +119,7 @@ async def main() -> None:
 
     register_global_middlewares(dp, config, client)
 
+    await services.set_default_commands(bot, config)
     await on_startup(bot, config.tg_bot.admin_ids)
     await dp.start_polling(bot)
 

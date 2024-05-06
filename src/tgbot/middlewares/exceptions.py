@@ -1,2 +1,6 @@
+import dataclasses
+
+
+@dataclasses.dataclass(eq=False)
 class CancelHandler(Exception):
-    pass
+    title: str | None = None

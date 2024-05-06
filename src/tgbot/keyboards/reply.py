@@ -19,7 +19,7 @@ def main_menu() -> types.ReplyKeyboardMarkup:
         types.KeyboardButton(text="🎭 Мероприятия"),
     )
     builder.row(
-        types.KeyboardButton(text="❔ О проекте")
+        types.KeyboardButton(text="ℹ️ О проекте")
     )
     return builder.as_markup(resize_keyboard=True)
 
@@ -27,7 +27,7 @@ def main_menu() -> types.ReplyKeyboardMarkup:
 def login_signup_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.row(
-        types.KeyboardButton(text="✏️ Создать аккаунт"),
-        types.KeyboardButton(text="🛂 Войти в аккаунт", web_app=WebAppInfo(url="")),
+        types.KeyboardButton(text="📝 Создать аккаунт"),
+        types.KeyboardButton(text="🔑 Войти в аккаунт", web_app=WebAppInfo(url="https://tiny-memes-glow.loca.lt")),
     )
     return builder.as_markup(resize_keyboard=True)

@@ -19,14 +19,11 @@
 # from .Throttling import (
 #     ThrottlingMiddleware, # TODO: https://ru.stackoverflow.com/questions/1540655/
 # )
-from .check_activate import (
-    CheckActivateMiddleware,
+from .access_control import (
+    AccessControlMiddleware,
 )
 from .config import (
     MiscMiddleware,
-)
-from .is_auth import (
-    IsAuthMiddleware,
 )
 
 __all__ = (
@@ -40,6 +37,5 @@ __all__ = (
     # "SupportMiddleware",
     # "LinkCheckMiddleware",
     "MiscMiddleware",
-    "CheckActivateMiddleware",
-    "IsAuthMiddleware",
+    "AccessControlMiddleware",
 )
