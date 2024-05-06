@@ -1,4 +1,5 @@
 import http
+import json
 from typing import (
     Any,
 )
@@ -34,6 +35,9 @@ from src.tgbot.services import (
 from src.tgbot.services.app import (
     handle_send_start_message,
 )
+from src.tgbot.services.app.user_operations import (
+    handle_login,
+)
 
 start_router = Router()
 
@@ -64,6 +68,13 @@ async def signup_handler(message: types.Message, state: FSMContext, **middleware
     client: QueClient = middleware_data.get("que-client")
     config: Config = middleware_data.get("config")
     await handle_signup(client=client, message=message, state=state, config=config)
+
+
+@start_router.message(F.web_app_data)
+async def web_app_login_handler(message: types.Message, state: FSMContext, **middleware_data: Any) -> None:
+    client: QueClient = middleware_data.get("que-client")
+    data = json.loads(message.web_app_data.data)
+    await handle_login(client=client, message=message, state=state, data=data)
 
 
 @start_router.message(F.text == "❔ О проекте")

@@ -12,8 +12,7 @@ from aiogram.fsm.context import (
 )
 from que_sdk import (
     QueClient,
-    SignUpSchema,
-    TMELoginSchema,
+    schemas,
 )
 
 from src.tgbot.config import (
@@ -64,7 +63,7 @@ async def handle_login_t_me(
         state: FSMContext,
 ) -> tuple[http.HTTPStatus, dict[str, Any]] | None:
     auth_data = security.generate_signature(telegram_id=message.from_user.id, secret_key=config.misc.secret_key)
-    status_code, response = await client.login_t_me(data_in=TMELoginSchema(**auth_data))
+    status_code, response = await client.login_t_me(data_in=schemas.TMELoginSchema(**auth_data))
     if status_code == http.HTTPStatus.OK:
         access_token, refresh_toke = response.get('access_token'), response.get('refresh_token')
 
@@ -81,7 +80,7 @@ async def handle_signup(
 ) -> tuple[http.HTTPStatus, dict[str, Any]]:
     username = message.from_user.username
     status_code, response = await client.signup(
-        data_in=SignUpSchema(
+        data_in=schemas.SignUpSchema(
             username=username,
             telegram_id=message.from_user.id,
         )
@@ -101,3 +100,28 @@ async def handle_not_founded_user(message: types.Message) -> None:
         text="Мы не смогли найти ваш в аккаунт. Создайте новый или войдите с помощью логина и пароля",
         reply_markup=reply.login_signup_menu()
     )
+
+
+async def handle_login(
+        client: QueClient,
+        state: FSMContext,
+        message: types.Message,
+        data: dict[str, Any]
+) -> tuple[http.HTTPStatus, dict[str, Any]]:
+    status_code, response = await client.login(
+        data_in=schemas.LoginSchema(
+            username=data.get("login"),
+            password=data.get("password"),
+            telegram_id=message.from_user.id
+        )
+    )
+    if status_code == http.HTTPStatus.OK:
+        access_token, refresh_toke = response.get('access_token'), response.get('refresh_token')
+        await state.update_data({"access_token": access_token, "refresh_token": refresh_toke})
+        await message.answer(
+            text="С возвращением, {username}".format(username=data.get("login")),
+            reply_markup=reply.main_menu()
+        )
+    if status_code == http.HTTPStatus.UNAUTHORIZED:
+        await message.answer(text="Неправильный login или password")
+    return status_code, response
