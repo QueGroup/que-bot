@@ -1,29 +1,39 @@
 import "./LoginForm.css"
-import React from "react";
-import {appJSON} from "../../configs/AxiosConfig";
+import React, {useCallback, useEffect} from "react";
+import {useTelegram} from "../../hooks/UseTelegram.js";
+
 
 const LoginForm = () => {
 
     const [data, setData] = React.useState({login: "", password: ""});
-
+    const {tg} = useTelegram();
     const handleData = (e, name) => {
         setData({...data, [name]: e.target.value});
     }
 
-    async function sendData() {
-
-        try {
-            const response = await appJSON.post("http://127.0.0.1:8080/api/v1/auth/login/", data);
-
-            if (response.status === 200) {
-                console.log("SUCCESS");
-            }
-
-            return response.data;
-        } catch {
-            console.error("LOH");
+    const onSendData = useCallback(() => {
+        tg.sendData(JSON.stringify(data))
+    }, [tg, data])
+    useEffect(() => {
+        tg.onEvent("mainButtonClicked", onSendData)
+        return () => {
+            tg.offEvent("mainButtonClicked", onSendData)
         }
-    }
+    }, [tg, onSendData])
+
+    useEffect(() => {
+        tg.MainButton.setParams(
+            {text: 'Войти'}
+        )
+    }, [tg])
+
+    useEffect(() => {
+        if (data.login === "" && data.password === "") {
+            tg.MainButton.hide();
+        } else {
+            tg.MainButton.show();
+        }
+    })
 
     return (
         <div className="login-form">
@@ -38,7 +48,6 @@ const LoginForm = () => {
                     <input type="password" id="password" name="password" value={data.password}
                            onChange={(e) => handleData(e, "password")}/>
                 </div>
-                <button type="submit" onClick={() => sendData()}>Login</button>
             </form>
         </div>
     )
