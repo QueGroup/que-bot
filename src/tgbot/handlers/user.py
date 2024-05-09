@@ -17,12 +17,18 @@ from que_sdk import (
     QueClient,
 )
 
+from src.tgbot.filters import (
+    ChatTypeFilter,
+)
 from src.tgbot.keyboards import (
     inline,
     reply,
 )
 
 user_router = Router()
+user_router.message.filter(
+    ChatTypeFilter(chat_type=["private"])
+)
 
 
 @user_router.message(F.text == "👤 Аккаунт")
@@ -53,6 +59,8 @@ async def user_activate_handler(message: types.Message, state: FSMContext, **mid
     await message.answer(text="Поздравляем! Вы восстановили аккаунт", reply_markup=reply.main_menu())
 
 
+# TODO: Чтобы у пользователя был выбор менять аккаунты, то мы должны сделать клавиатуру, в которой
+#  будут две кнопки: Войти и Войти по паролю.
 @user_router.callback_query(F.data == "user:signout")
 async def user_signout_handler(call: types.CallbackQuery, state: FSMContext) -> None:
     text = (

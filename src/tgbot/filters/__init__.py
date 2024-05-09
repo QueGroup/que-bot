@@ -7,4 +7,5 @@ from .is_admin_filter import (
 
 __all__ = (
     "IsAdmin",
+    "ChatTypeFilter"
 )

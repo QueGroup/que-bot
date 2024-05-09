@@ -25,6 +25,7 @@ from .exceptions import (
 )
 
 
+# TODO: Проверить ещё забанен ли пользователь или нет
 class AccessControlMiddleware(BaseMiddleware):
     def __init__(self, client: QueClient) -> None:
         self.client = client
@@ -32,7 +33,7 @@ class AccessControlMiddleware(BaseMiddleware):
         self.text_unauthorized = "Вы не вошли в аккаунт"
 
     # FIXME: REFACTOR ME
-    async def __call__( # type: ignore
+    async def __call__(  # type: ignore
             self,
             handler: Handler,
             event: TelegramObject,
@@ -47,11 +48,15 @@ class AccessControlMiddleware(BaseMiddleware):
         storage = await state.get_data()
 
         try:
-            if event.web_app_data is not None or command == "/start" or command == "/reactivate":
+            if (
+                    event.web_app_data is not None or
+                    command == "/start" or
+                    command == "/reactivate" or
+                    command == "📝 Создать аккаунт"
+            ):
                 return await handler(event, data)
         except AttributeError:
-            if command == "/start" or command == "/reactivate":
-                return await handler(event, data)
+            return await handler(event, data)
 
         try:
             await self.on_process_event(storage=storage)
