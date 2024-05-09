@@ -1,0 +1,100 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-05-07 10:01+0300\n"
+"PO-Revision-Date: 2024-05-07 10:11+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: src/tgbot/handlers/start.py:74
+msgid "Наша система полностью open-source"
+msgstr ""
+
+#: src/tgbot/keyboards/inline.py:24
+msgid "👤 Мой профиль"
+msgstr ""
+
+#: src/tgbot/keyboards/inline.py:27
+msgid "🔙 Выйти из аккаунта"
+msgstr ""
+
+#: src/tgbot/keyboards/inline.py:36
+msgid "🚀 Активировать"
+msgstr ""
+
+#: src/tgbot/keyboards/reply.py:16
+msgid "👤 Аккаунт"
+msgstr ""
+
+#: src/tgbot/keyboards/reply.py:19
+msgid "💜 Знакомства"
+msgstr ""
+
+#: src/tgbot/keyboards/reply.py:20
+msgid "🎭 Мероприятия"
+msgstr ""
+
+#: src/tgbot/keyboards/reply.py:23
+msgid "ℹ️ О проекте"
+msgstr ""
+
+#: src/tgbot/keyboards/reply.py:31
+msgid "📝 Создать аккаунт"
+msgstr ""
+
+#: src/tgbot/keyboards/reply.py:32
+msgid "🔑 Войти в аккаунт"
+msgstr ""
+
+#: src/tgbot/services/app/set_bot_commands.py:27
+msgid "🟢 Запустить бота"
+msgstr ""
+
+#: src/tgbot/services/app/user.py:35
+msgid "🎉 Добро пожаловать, {username}! Вы создали новый аккаунт"
+msgstr ""
+
+#: src/tgbot/services/app/user.py:36
+msgid "👋 Привет {username} вы вошли в аккаунт"
+msgstr ""
+
+#: src/tgbot/services/app/user.py:37
+msgid ""
+"🛑 К сожалению, ваш аккаунт был деактивирован, и доступ к приложению "
+"ограничен.\n"
+"Чтобы возобновить работу с нашим приложением, пожалуйста, активируйте "
+"аккаунт.\n"
+"Чтобы активировать аккаунт, используйте команду /reactivate."
+msgstr ""
+
+#: src/tgbot/services/app/user.py:103
+msgid ""
+"🔍 Извините, мы не смогли найти ваш аккаунт.\n"
+"Если вы еще не зарегистрированы, вы можете создать новый аккаунт, нажав "
+"на кнопку 'Создать аккаунт' ниже.\n"
+"Если вы уже зарегистрированы, пожалуйста, войдите в свой аккаунт, "
+"используя ваш логин и пароль."
+msgstr ""
+
+#: src/tgbot/services/app/user.py:132
+msgid "С возвращением, {username}"
+msgstr ""
+
+#: src/tgbot/services/app/user.py:136
+msgid ""
+"🔐 Ой, кажется, вы ввели неправильный логин или пароль. Пожалуйста, "
+"проверьте введенные данные и попробуйте снова."
+msgstr ""
