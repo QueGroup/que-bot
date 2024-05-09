@@ -4,6 +4,9 @@ from aiogram import (
 from aiogram.types import (
     WebAppInfo,
 )
+from aiogram.utils.i18n import (
+    gettext as _,
+)
 from aiogram.utils.keyboard import (
     ReplyKeyboardBuilder,
 )
@@ -12,14 +15,14 @@ from aiogram.utils.keyboard import (
 def main_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.add(
-        types.KeyboardButton(text="👤 Аккаунт")
+        types.KeyboardButton(text=_("👤 Аккаунт"))
     )
     builder.row(
-        types.KeyboardButton(text="💜 Знакомства"),
-        types.KeyboardButton(text="🎭 Мероприятия"),
+        types.KeyboardButton(text=_("💜 Знакомства")),
+        types.KeyboardButton(text=_("🎭 Мероприятия")),
     )
     builder.row(
-        types.KeyboardButton(text="ℹ️ О проекте")
+        types.KeyboardButton(text=_("ℹ️ О проекте"))
     )
     return builder.as_markup(resize_keyboard=True)
 
@@ -27,7 +30,7 @@ def main_menu() -> types.ReplyKeyboardMarkup:
 def login_signup_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.row(
-        types.KeyboardButton(text="📝 Создать аккаунт"),
-        types.KeyboardButton(text="🔑 Войти в аккаунт", web_app=WebAppInfo(url="https://tiny-memes-glow.loca.lt")),
+        types.KeyboardButton(text=_("📝 Создать аккаунт")),
+        types.KeyboardButton(text=_("🔑 Войти в аккаунт"), web_app=WebAppInfo(url="https://floppy-phones-camp.loca.lt")),
     )
     return builder.as_markup(resize_keyboard=True)

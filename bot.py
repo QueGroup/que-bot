@@ -21,6 +21,10 @@ from aiogram.fsm.storage.redis import (
     DefaultKeyBuilder,
     RedisStorage,
 )
+from aiogram.utils.i18n import (
+    ConstI18nMiddleware,
+    I18n,
+)
 import betterlogging as bl
 from que_sdk import (
     QueClient,
@@ -75,13 +79,15 @@ def setup_logging() -> None:
 def register_global_middlewares(
         dp: Dispatcher,
         config: Config,
-        client: QueClient
+        client: QueClient,
+        i18n: I18n
 ) -> None:
     logging.info("Setup middlewares...")
     middleware_types = [
         MiscMiddleware(config, client),
-        AccessControlMiddleware(client=client)
+        AccessControlMiddleware(client=client),
     ]
+
     for middleware_type in middleware_types:
         dp.message.outer_middleware(middleware_type)
         dp.callback_query.outer_middleware(middleware_type)
@@ -110,15 +116,14 @@ async def main() -> None:
     setup_logging()
 
     config = load_config()
+    i18n = I18n(path=config.tg_bot.LOCALES_DIR, default_locale="ru", domain="messages")
     storage = get_storage(config)
     client = QueClient()
     bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher(storage=storage)
-
+    ConstI18nMiddleware(locale="ru", i18n=i18n).setup(router=dp)
+    register_global_middlewares(dp, config, client, i18n)
     dp.include_routers(*routers_list)
-
-    register_global_middlewares(dp, config, client)
-
     await services.set_default_commands(bot, config)
     await on_startup(bot, config.tg_bot.admin_ids)
     await dp.start_polling(bot)

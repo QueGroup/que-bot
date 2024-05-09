@@ -63,6 +63,8 @@ class TgBot:
     ip: str
     moderate_chat: int
     use_redis: bool
+    _BASE_DIR = Path(__file__).parent.parent.parent
+    LOCALES_DIR = _BASE_DIR / "locales"
 
     @staticmethod
     def from_env(env: Env) -> "TgBot":

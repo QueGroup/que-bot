@@ -10,6 +10,9 @@ from aiogram import (
 from aiogram.fsm.context import (
     FSMContext,
 )
+from aiogram.utils.i18n import (
+    gettext as _,
+)
 from que_sdk import (
     QueClient,
     schemas,
@@ -33,9 +36,9 @@ def welcoming_message(
     messages = {
         "welcome": "🎉 Добро пожаловать, {username}! Вы создали новый аккаунт",
         "greet_auth_user": "👋 Привет {username} вы вошли в аккаунт",
-        "deactivate_user": "🛑 К сожалению, ваш аккаунт был деактивирован, и доступ к приложению ограничен.\n"
-                           "Чтобы возобновить работу с нашим приложением, пожалуйста, активируйте аккаунт.\n"
-                           "Чтобы активировать аккаунт, используйте команду /reactivate.",
+        "deactivate_user": ("🛑 К сожалению, ваш аккаунт был деактивирован, и доступ к приложению ограничен.\n"
+                            "Чтобы возобновить работу с нашим приложением, пожалуйста, активируйте аккаунт.\n"
+                            "Чтобы активировать аккаунт, используйте команду /reactivate."),
     }
 
     return messages[message_type].format(**kwargs)
@@ -54,7 +57,7 @@ async def handle_send_start_message(
 ) -> None:
     username = response.get("username") if response.get("username") is not None else message.from_user.username
     await message.answer(
-        text=welcoming_message(username=username, message_type="greet_auth_user"),
+        text=welcoming_message(message_type="greet_auth_user", username=username),
         reply_markup=reply.main_menu()
     )
 
@@ -90,7 +93,7 @@ async def handle_signup(
     )
 
     await message.answer(
-        text=welcoming_message(username=username, message_type="welcome"),
+        text=welcoming_message(message_type="welcome", username=username),
         reply_markup=reply.main_menu()
     )
     await handle_login_t_me(client=client, state=state, config=config, message=message)
@@ -99,9 +102,9 @@ async def handle_signup(
 
 
 async def handle_not_founded_user(message: types.Message) -> None:
-    text = (
-        "🔍 Извините, мы не смогли найти ваш аккаунт.\nЕсли вы еще не зарегистрированы, вы можете создать новый "
-        "аккаунт, нажав на кнопку 'Создать аккаунт' ниже.\nЕсли вы уже зарегистрированы, пожалуйста, войдите в свой "
+    text = _(
+        "🔍 Извините, мы не смогли найти ваш аккаунт.\nВы можете создать новый "
+        "аккаунт, нажав на кнопку 'Создать аккаунт' ниже.\nили войти в свой "
         "аккаунт, используя ваш логин и пароль."
 
     )
@@ -128,10 +131,14 @@ async def handle_login(
         access_token, refresh_toke = response.get('access_token'), response.get('refresh_token')
         await state.update_data({"access_token": access_token, "refresh_token": refresh_toke})
         await message.answer(
-            text="С возвращением, {username}".format(username=data.get("login")),
+            text=_("С возвращением, {username}").format(username=data.get("login")),
             reply_markup=reply.main_menu()
         )
     if status_code == http.HTTPStatus.UNAUTHORIZED:
-        await message.answer(text="🔐 Ой, кажется, вы ввели неправильный логин или пароль. Пожалуйста, проверьте "
-                                  "введенные данные и попробуйте снова.")
+        await message.answer(
+            text=_(
+                "🔐 Ой, кажется, вы ввели неправильный логин или пароль. Пожалуйста, проверьте "
+                "введенные данные и попробуйте снова."
+            )
+        )
     return status_code, response
