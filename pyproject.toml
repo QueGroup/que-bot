@@ -27,6 +27,7 @@ deptry = "^0.12.0"
 ruff = "^0.1.14"
 pip-audit = "^2.7.0"
 que-sdk = "^0.1.0"
+babel = "^2.15.0"
 
 [tool.black]
 line-length = 99
