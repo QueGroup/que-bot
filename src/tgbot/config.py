@@ -21,37 +21,37 @@ class RedisConfig:
 
     Attributes
     ----------
-    redis_pass : Optional(str)
+    password : Optional(str)
         The password used to authenticate with Redis.
-    redis_port : Optional(int)
+    port : Optional(int)
         The port where Redis server is listening.
-    redis_host : Optional(str)
+    host : Optional(str)
         The host where Redis server is located.
     """
 
-    redis_pass: str | None
-    redis_port: int | None
-    redis_host: str | None
+    password: str | None
+    port: int | None
+    host: str | None
 
     def dsn(self) -> str:
         """
         Constructs and returns a Redis DSN (Data Source Name) for this database configuration.
         """
-        if self.redis_pass:
-            return f"redis://:{self.redis_pass}@{self.redis_host}:{self.redis_port}/0"
+        if self.password:
+            return f"redis://:{self.password}@{self.host}:{self.port}/0"
         else:
-            return f"redis://{self.redis_host}:{self.redis_port}/0"
+            return f"redis://{self.host}:{self.port}/0"
 
     @staticmethod
     def from_env(env: Env) -> "RedisConfig":
         """
         Creates the RedisConfig object from environment variables.
         """
-        redis_pass = env.str("REDIS_PASSWORD")
-        redis_port = env.int("REDIS_PORT")
-        redis_host = env.str("REDIS_HOST")
+        password = env.str("REDIS_PASSWORD", None)
+        port = env.int("REDIS_PORT")
+        host = env.str("REDIS_HOST")
 
-        return RedisConfig(redis_pass=redis_pass, redis_port=redis_port, redis_host=redis_host)
+        return RedisConfig(password=password, port=port, host=host)
 
 
 @dataclass(frozen=True, slots=True)
@@ -150,4 +150,5 @@ def load_config() -> Config:
     return Config(
         tg_bot=TgBot.from_env(env),
         misc=Miscellaneous.from_env(env),
+        redis=RedisConfig.from_env(env)
     )
