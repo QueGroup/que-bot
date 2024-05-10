@@ -16,9 +16,9 @@
 # from .SchedulerWare import (
 #     SchedulerMiddleware,
 # )
-# from .Throttling import (
-#     ThrottlingMiddleware, # TODO: https://ru.stackoverflow.com/questions/1540655/
-# )
+from .throttling import (
+    ThrottlingMiddleware,
+)
 from .access_control import (
     AccessControlMiddleware,
 )
@@ -33,7 +33,7 @@ __all__ = (
     # "LinkCheck",
     # "LogMiddleware",
     # "SchedulerMiddleware",
-    # "ThrottlingMiddleware",
+    "ThrottlingMiddleware",
     # "SupportMiddleware",
     # "LinkCheckMiddleware",
     "MiscMiddleware",

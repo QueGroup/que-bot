@@ -29,6 +29,9 @@ import betterlogging as bl
 from que_sdk import (
     QueClient,
 )
+from redis.asyncio import (  # type: ignore
+    Redis,
+)
 
 from src.tgbot import (
     services,
@@ -43,6 +46,7 @@ from src.tgbot.handlers import (
 from src.tgbot.middlewares import (
     AccessControlMiddleware,
     MiscMiddleware,
+    ThrottlingMiddleware,
 )
 
 
@@ -80,14 +84,14 @@ def register_global_middlewares(
         dp: Dispatcher,
         config: Config,
         client: QueClient,
-        i18n: I18n
+        redis: Redis,
 ) -> None:
     logging.info("Setup middlewares...")
     middleware_types = [
         MiscMiddleware(config, client),
         AccessControlMiddleware(client=client),
     ]
-
+    dp.message.middleware(ThrottlingMiddleware(redis))
     for middleware_type in middleware_types:
         dp.message.outer_middleware(middleware_type)
         dp.callback_query.outer_middleware(middleware_type)
@@ -119,10 +123,18 @@ async def main() -> None:
     i18n = I18n(path=config.tg_bot.LOCALES_DIR, default_locale="ru", domain="messages")
     storage = get_storage(config)
     client = QueClient()
+
+    redis = Redis(
+        host=config.redis.host,  # type: ignore
+        port=config.redis.port,  # type: ignore
+        decode_responses=True,
+        # max_connections=10,
+        # auto_close_connection_pool=True
+    )
     bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher(storage=storage)
     ConstI18nMiddleware(locale="ru", i18n=i18n).setup(router=dp)
-    register_global_middlewares(dp, config, client, i18n)
+    register_global_middlewares(dp, config, client, redis)
     dp.include_routers(*routers_list)
     await services.set_default_commands(bot, config)
     await on_startup(bot, config.tg_bot.admin_ids)
