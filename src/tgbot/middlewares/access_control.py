@@ -46,18 +46,19 @@ class AccessControlMiddleware(BaseMiddleware):
             command = event.data
         state = data.get("state")
         storage = await state.get_data()
-
+        # TODO: Добавить проверку, что это может быть админ или агент тех поддержки
         try:
             if (
                     event.web_app_data is not None or
                     command == "/start" or
                     command == "/reactivate" or
-                    command == "📝 Создать аккаунт"
+                    command == "📝 Создать аккаунт" or
+                    command == "/help"
             ):
                 return await handler(event, data)
         except AttributeError:
             return await handler(event, data)
-
+        # TODO: Проверить как это работает, потому что мне кажется, что до сюда не доходит
         try:
             await self.on_process_event(storage=storage)
             return await handler(event, data)

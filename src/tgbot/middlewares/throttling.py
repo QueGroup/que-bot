@@ -8,7 +8,7 @@ from aiogram import (
     BaseMiddleware,
     types,
 )
-import redis  # type: ignore
+from redis.asyncio.client import Redis  # type: ignore
 
 from src.tgbot.middlewares.exceptions import (
     CancelHandler,
@@ -20,7 +20,7 @@ from src.tgbot.types import (
 
 
 class ThrottlingMiddleware(BaseMiddleware):
-    def __init__(self, r: redis.asyncio.Redis, limit: int = 2, key_prefix: str = 'antiflood_') -> None:
+    def __init__(self, r: Redis, limit: int = 2, key_prefix: str = 'antiflood_') -> None:
         self.rate_limit = limit
         self.prefix = key_prefix
         self.throttle_manager = ThrottleManager(r=r)
@@ -71,7 +71,7 @@ class ThrottleManager:
         "LAST_CALL", "EXCEEDED_COUNT"
     ]
 
-    def __init__(self, r: redis.asyncio.Redis):
+    def __init__(self, r: Redis):
         self.redis = r
 
     async def throttle(self, key: str, rate: float, user_id: int, chat_id: int) -> bool:

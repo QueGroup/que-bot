@@ -10,6 +10,7 @@ from aiogram import (
     types,
 )
 from aiogram.filters import (
+    Command,
     CommandStart,
 )
 from aiogram.fsm.context import (
@@ -82,3 +83,8 @@ async def about_project_handler(message: types.Message) -> None:
         "Наша система полностью open-source"
     )
     await message.answer(text=text, reply_markup=inline.about_project_menu())
+
+
+@start_router.message(F.text, Command("help"))
+async def help_handler(message: types.Message) -> None:
+    await message.answer("👍 👎")

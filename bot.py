@@ -29,9 +29,7 @@ import betterlogging as bl
 from que_sdk import (
     QueClient,
 )
-from redis.asyncio import (  # type: ignore
-    Redis,
-)
+from redis.asyncio.client import Redis  # type: ignore
 
 from src.tgbot import (
     services,
@@ -125,12 +123,13 @@ async def main() -> None:
     client = QueClient()
 
     redis = Redis(
-        host=config.redis.host,  # type: ignore
-        port=config.redis.port,  # type: ignore
+        host=config.redis.host,
+        port=config.redis.port,
         decode_responses=True,
-        # max_connections=10,
-        # auto_close_connection_pool=True
+        max_connections=10,
+        auto_close_connection_pool=True
     )
+
     bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher(storage=storage)
     ConstI18nMiddleware(locale="ru", i18n=i18n).setup(router=dp)
@@ -143,6 +142,7 @@ async def main() -> None:
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        # FIXME: Почему-то с редисом asyncio.run(main()) не работает
+        asyncio.get_event_loop().run_until_complete(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Бот был выключен!")
