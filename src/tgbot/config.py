@@ -91,6 +91,9 @@ class TgBot:
 @dataclass(frozen=True, slots=True)
 class Miscellaneous:
     secret_key: str
+    api_id: int | None = None
+    api_hash: str | None = None
+    session_str: str | None = None
 
     @staticmethod
     def from_env(env: Env) -> "Miscellaneous":
@@ -98,8 +101,14 @@ class Miscellaneous:
         Creates the Miscellaneous object from environment variables.
         """
         secret_key = env.str("SIGNATURE_SECRET_KEY")
+        api_id = env.int("API_ID")
+        api_hash = env.str("API_HASH")
+        session_str = env.str("SESSION_STR")
         return Miscellaneous(
             secret_key=secret_key,
+            api_id=api_id,
+            api_hash=api_hash,
+            session_str=session_str
         )
 
 
