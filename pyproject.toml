@@ -11,14 +11,20 @@ python = "^3.11"
 aiogram = "^3.4.1"
 environs = "^10.2.0"
 better-profanity = ">=0.7.0,<0.8.0"
-pytest = "^7.4.4"
 aiohttp = "<3.9.3"
 apscheduler = "^3.10.4"
 nudenet = "^3.0.8"
-pre-commit = "^3.6.0"
 pydantic = "^2.4.1"
 redis = "^5.0.1"
 betterlogging = ">=0.2.1,<0.3.0"
+que-sdk = "^0.1.0"
+babel = "^2.15.0"
+
+
+[tool.poetry.group.dev.dependencies]
+telethon = "^1.35.0"
+pytest-asyncio = "^0.23.6"
+anyio = "^4.3.0"
 flake8 = "^7.0.0"
 black = "^23.12.1"
 mypy = "^1.8.0"
@@ -26,8 +32,8 @@ isort = "^5.13.2"
 deptry = "^0.12.0"
 ruff = "^0.1.14"
 pip-audit = "^2.7.0"
-que-sdk = "^0.1.0"
-babel = "^2.15.0"
+pre-commit = "^3.6.0"
+pytest = "^7.4.4"
 
 [tool.black]
 line-length = 99

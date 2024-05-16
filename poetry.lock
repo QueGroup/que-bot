@@ -13,13 +13,13 @@ files = [
 
 [[package]]
 name = "aiogram"
-version = "3.5.0"
+version = "3.6.0"
 description = "Modern and fully asynchronous framework for Telegram Bot API"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "aiogram-3.5.0-py3-none-any.whl", hash = "sha256:70b5804671b87214768a2a63f19f1457684bd0c6cb6abd23e73bb16207fd7e58"},
-    {file = "aiogram-3.5.0.tar.gz", hash = "sha256:1793deb24f36a6fc7b678c31d9a831cef7972765710a47a3e139645a99facba4"},
+    {file = "aiogram-3.6.0-py3-none-any.whl", hash = "sha256:f04cc42151f8198cdff038af2f62e9a481ce136c37e0cf9e3f2fe5a7e80bc4bb"},
+    {file = "aiogram-3.6.0.tar.gz", hash = "sha256:66bfbdbef2ad5f4bd1a695aee84bbc3146ef7c1cc72d1bdacd3d5f8334d5934f"},
 ]
 
 [package.dependencies]
@@ -537,13 +537,13 @@ cron = ["capturer (>=2.4)"]
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "7.3.2"
+version = "7.3.4"
 description = "Python library for CycloneDX"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cyclonedx_python_lib-7.3.2-py3-none-any.whl", hash = "sha256:fcbcbe4c99f87910a239de84f2bc0db4a429c208b4ef0436c0cbc3677ef1b790"},
-    {file = "cyclonedx_python_lib-7.3.2.tar.gz", hash = "sha256:e2b12702e98da7bce89c28496c73964c2a0b128276078c1d0b398a8ba359e000"},
+    {file = "cyclonedx_python_lib-7.3.4-py3-none-any.whl", hash = "sha256:8b6dc39f2281feb7fbf9b174fa5d8d3f8f7b51fd6f1d83e9b4c9bbd60ec2ab91"},
+    {file = "cyclonedx_python_lib-7.3.4.tar.gz", hash = "sha256:f374855bd6b736b3a6be4eec93b5ca7f160c8282fe4ba5486518da11dbe83f1b"},
 ]
 
 [package.dependencies]
@@ -1474,13 +1474,13 @@ testing = ["aboutcode-toolkit (>=6.0.0)", "black", "pytest (>=6,!=7.0.0)", "pyte
 
 [[package]]
 name = "platformdirs"
-version = "4.2.1"
+version = "4.2.2"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "platformdirs-4.2.1-py3-none-any.whl", hash = "sha256:17d5a1161b3fd67b390023cb2d3b026bbd40abde6fdb052dfbd3a29c3ba22ee1"},
-    {file = "platformdirs-4.2.1.tar.gz", hash = "sha256:031cd18d4ec63ec53e82dceaac0417d218a6863f7745dfcc9efe7793b7039bdf"},
+    {file = "platformdirs-4.2.2-py3-none-any.whl", hash = "sha256:2d7a1657e36a80ea911db832a8a6ece5ee53d8de21edd5cc5879af6530b1bfee"},
+    {file = "platformdirs-4.2.2.tar.gz", hash = "sha256:38b7b51f512eed9e84a22788b4bce1de17c0adb134d6becb09836e37d8654cd3"},
 ]
 
 [package.extras]
@@ -1505,13 +1505,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pre-commit"
-version = "3.7.0"
+version = "3.7.1"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pre_commit-3.7.0-py2.py3-none-any.whl", hash = "sha256:5eae9e10c2b5ac51577c3452ec0a490455c45a0533f7960f993a0d01e59decab"},
-    {file = "pre_commit-3.7.0.tar.gz", hash = "sha256:e209d61b8acdcf742404408531f0c37d49d2c734fd7cff2d6076083d191cb060"},
+    {file = "pre_commit-3.7.1-py2.py3-none-any.whl", hash = "sha256:fae36fd1d7ad7d6a5a1c0b0d5adb2ed1a3bda5a21bf6c3e5372073d7a11cd4c5"},
+    {file = "pre_commit-3.7.1.tar.gz", hash = "sha256:8ca3ad567bc78a4972a3f1a477e94a79d4597e8140a6e0b651c5e33899c3654a"},
 ]
 
 [package.dependencies]
@@ -1554,6 +1554,27 @@ files = [
 
 [package.dependencies]
 defusedxml = ">=0.7.1,<0.8.0"
+
+[[package]]
+name = "pyaes"
+version = "1.6.1"
+description = "Pure-Python Implementation of the AES block-cipher and common modes of operation"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyaes-1.6.1.tar.gz", hash = "sha256:02c1b1405c38d3c370b085fb952dd8bea3fadcee6411ad99f312cc129c536d8f"},
+]
+
+[[package]]
+name = "pyasn1"
+version = "0.6.0"
+description = "Pure-Python implementation of ASN.1 types and DER/BER/CER codecs (X.208)"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyasn1-0.6.0-py2.py3-none-any.whl", hash = "sha256:cca4bb0f2df5504f02f6f8a775b6e416ff9b0b3b16f7ee80b5a3153d9b804473"},
+    {file = "pyasn1-0.6.0.tar.gz", hash = "sha256:3a35ab2c4b5ef98e17dfdec8ab074046fbda76e281c5a706ccd82328cfc8f64c"},
+]
 
 [[package]]
 name = "pycodestyle"
@@ -1747,6 +1768,24 @@ pluggy = ">=0.12,<2.0"
 testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-asyncio"
+version = "0.23.6"
+description = "Pytest support for asyncio"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-asyncio-0.23.6.tar.gz", hash = "sha256:ffe523a89c1c222598c76856e76852b787504ddb72dd5d9b6617ffa8aa2cde5f"},
+    {file = "pytest_asyncio-0.23.6-py3-none-any.whl", hash = "sha256:68516fdd1018ac57b846c9846b954f0393b26f094764a28c955eabb0536a4e8a"},
+]
+
+[package.dependencies]
+pytest = ">=7.0.0,<9"
+
+[package.extras]
+docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
+testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -1903,6 +1942,20 @@ pygments = ">=2.13.0,<3.0.0"
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
+name = "rsa"
+version = "4.9"
+description = "Pure-Python RSA implementation"
+optional = false
+python-versions = ">=3.6,<4"
+files = [
+    {file = "rsa-4.9-py3-none-any.whl", hash = "sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7"},
+    {file = "rsa-4.9.tar.gz", hash = "sha256:e38464a49c6c85d7f1351b0126661487a7e0a14a50f1675ec50eb34d4f20ef21"},
+]
+
+[package.dependencies]
+pyasn1 = ">=0.1.3"
+
+[[package]]
 name = "ruff"
 version = "0.1.15"
 description = "An extremely fast Python linter and code formatter, written in Rust."
@@ -1992,6 +2045,23 @@ files = [
 mpmath = ">=0.19"
 
 [[package]]
+name = "telethon"
+version = "1.35.0"
+description = "Full-featured Telegram client library for Python 3"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "Telethon-1.35.0.tar.gz", hash = "sha256:99d7a2e161e9af1cdf03feef7a3fea6eef304a9caf620fe13aefc53099845555"},
+]
+
+[package.dependencies]
+pyaes = "*"
+rsa = "*"
+
+[package.extras]
+cryptg = ["cryptg"]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -2060,13 +2130,13 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.26.1"
+version = "20.26.2"
 description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "virtualenv-20.26.1-py3-none-any.whl", hash = "sha256:7aa9982a728ae5892558bff6a2839c00b9ed145523ece2274fad6f414690ae75"},
-    {file = "virtualenv-20.26.1.tar.gz", hash = "sha256:604bfdceaeece392802e6ae48e69cec49168b9c5f4a44e483963f9242eb0e78b"},
+    {file = "virtualenv-20.26.2-py3-none-any.whl", hash = "sha256:a624db5e94f01ad993d476b9ee5346fdf7b9de43ccaee0e0197012dc838a0e9b"},
+    {file = "virtualenv-20.26.2.tar.gz", hash = "sha256:82bf0f4eebbb78d36ddaee0283d43fe5736b53880b8a8cdcd37390a07ac3741c"},
 ]
 
 [package.dependencies]
@@ -2195,4 +2265,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "250e0a5bd6ebae7e6018c5326fb7e27b7868f9831736cafc9f54ad0c7895bbcc"
+content-hash = "a203a354e8d034917c2768aa48deddb317e6515ffb7f2e90391c65b01e25d039"
