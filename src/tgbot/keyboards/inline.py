@@ -20,11 +20,16 @@ def about_project_menu() -> types.InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def user_menu() -> types.InlineKeyboardMarkup:
+def user_menu(is_profile: bool) -> types.InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.row(
-        types.InlineKeyboardButton(text=_("👤 Мой профиль"), callback_data="user:profile"),
-    )
+    if is_profile:
+        builder.row(
+            types.InlineKeyboardButton(text=_("👤 Мой профиль"), callback_data="user:profile"),
+        )
+    else:
+        builder.row(
+            types.InlineKeyboardButton(text=_("Создать профиль"), callback_data="user:profile-create"),
+        )
     builder.row(
         types.InlineKeyboardButton(text=_("Изменить"), callback_data="user:edit"),
         types.InlineKeyboardButton(text=_("Устройства"), callback_data="user:session")
