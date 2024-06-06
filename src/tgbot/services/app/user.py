@@ -46,7 +46,7 @@ def welcoming_message(
 
 async def get_user_data(client: QueClient, storage: dict[str, Any]) -> tuple[http.HTTPStatus, dict[str, Any]]:
     access_token = storage.get("access_token")
-    status_code, response = await client.get_user_me(access_token)
+    status_code, response = await client.get_user_me(access_token=access_token)
 
     return status_code, response
 
