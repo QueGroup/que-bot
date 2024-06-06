@@ -46,7 +46,9 @@ async def user_handler(message: types.Message, state: FSMContext, **middleware_d
         telegram_id=response.get("telegram_id"),
         days=days
     )
-    await message.answer(text=text, reply_markup=inline.user_menu())
+    profile_created = bool(response.get("profile"))
+    await state.update_data({"id": response.get("id")})
+    await message.answer(text=text, reply_markup=inline.user_menu(is_profile=profile_created))
 
 
 @user_router.message(F.text, Command("reactivate"))
