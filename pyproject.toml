@@ -17,8 +17,9 @@ nudenet = "^3.0.8"
 pydantic = "^2.4.1"
 redis = "^5.0.1"
 betterlogging = ">=0.2.1,<0.3.0"
-que-sdk = "^0.1.0"
+que-sdk = "^0.1.7"
 babel = "^2.15.0"
+yandex-geo = "^2.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
