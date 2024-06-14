@@ -41,10 +41,10 @@ from src.tgbot.config import (
 from src.tgbot.handlers import (
     routers_list,
 )
-from src.tgbot.middlewares import (
+from src.tgbot.middlewares import (  # ThrottlingMiddleware,
     AccessControlMiddleware,
+    AlbumMiddleware,
     MiscMiddleware,
-    ThrottlingMiddleware,
 )
 
 
@@ -89,7 +89,8 @@ def register_global_middlewares(
         MiscMiddleware(config, client),
         AccessControlMiddleware(client=client),
     ]
-    dp.message.middleware(ThrottlingMiddleware(redis))
+    # dp.message.middleware(ThrottlingMiddleware(redis))
+    dp.message.middleware(AlbumMiddleware())
     for middleware_type in middleware_types:
         dp.message.outer_middleware(middleware_type)
         dp.callback_query.outer_middleware(middleware_type)
