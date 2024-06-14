@@ -1,44 +1,14 @@
-from aiogram.fsm.state import (
-    State,
-    StatesGroup,
+from aiogram.fsm import (
+    state,
 )
 
 
-class AdminsActions(StatesGroup):
-    add = State()
-    delete = State()
-
-
-class NewData(StatesGroup):
-    sex = State()
-    commentary = State()
-    name = State()
-    need_partner_sex = State()
-    age = State()
-    city = State()
-    nationality = State()
-    education = State()
-    town = State()
-    car = State()
-    own_home = State()
-    hobbies = State()
-    child = State()
-    marital = State()
-    photo = State()
-
-
-class RegData(StatesGroup):
-    sex = State()
-    commentary = State()
-    name = State()
-    need_partner_sex = State()
-    age = State()
-    nationality = State()
-    education = State()
-    town = State()
-    car = State()
-    own_home = State()
-    hobbies = State()
-    child = State()
-    marital = State()
-    photo = State()
+class RegistrationSG(state.StatesGroup):
+    first_name = state.State()
+    gender = state.State()
+    city = state.State()
+    birthday = state.State()
+    about_me = state.State()
+    interested_in = state.State()
+    hobbies = state.State()
+    photos = state.State()
