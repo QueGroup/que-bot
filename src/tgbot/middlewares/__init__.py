@@ -16,14 +16,17 @@
 # from .SchedulerWare import (
 #     SchedulerMiddleware,
 # )
-from .throttling import (
-    ThrottlingMiddleware,
-)
 from .access_control import (
     AccessControlMiddleware,
 )
+from .album import (
+    AlbumMiddleware,
+)
 from .config import (
     MiscMiddleware,
+)
+from .throttling import (
+    ThrottlingMiddleware,
 )
 
 __all__ = (
@@ -38,4 +41,5 @@ __all__ = (
     # "LinkCheckMiddleware",
     "MiscMiddleware",
     "AccessControlMiddleware",
+    "AlbumMiddleware",
 )

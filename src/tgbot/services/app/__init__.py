@@ -6,12 +6,12 @@ from .set_bot_commands import (
 )
 from .user import (
     get_user_data,
+    handle_login,
     handle_login_t_me,
     handle_not_founded_user,
     handle_send_start_message,
     handle_signup,
     welcoming_message,
-    handle_login,
 )
 
 __all__ = (
