@@ -20,7 +20,12 @@ from src.tgbot.types import (
 
 
 class ThrottlingMiddleware(BaseMiddleware):
-    def __init__(self, r: Redis, limit: int = 2, key_prefix: str = 'antiflood_') -> None:
+    def __init__(
+            self,
+            r: Redis,
+            limit: int = 1,
+            key_prefix: str = 'antiflood_',
+    ) -> None:
         self.rate_limit = limit
         self.prefix = key_prefix
         self.throttle_manager = ThrottleManager(r=r)
@@ -61,7 +66,7 @@ class ThrottlingMiddleware(BaseMiddleware):
     @staticmethod
     async def event_throttled(event: types.Message, throttled: Throttled) -> None:
         delta = throttled.rate - throttled.delta
-        if throttled.exceeded_count <= 2:
+        if throttled.exceeded_count <= 3:
             await event.answer(f'Too many requests.\nTry again in {delta:.2f} seconds.')
 
 
