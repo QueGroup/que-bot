@@ -59,3 +59,31 @@ def profile_menu() -> types.InlineKeyboardMarkup:
         types.InlineKeyboardButton(text="<< Вернуться назад", callback_data="back_to_user_menu")
     )
     return builder.as_markup()
+
+# TODO: Может понадобится когда-нибудь
+# class HobbiesCallbackFactory(CallbackData):
+#     action: str
+#     hobby_name: str | None = None
+#
+#
+# def hobbies_menu() -> types.InlineKeyboardMarkup:
+#     hobbies = [
+#         ("Спорт", "sports"),
+#         ("Музыка", "music"),
+#         ("Путешествия", "travelling"),
+#         ("Готовка", "cooking"),
+#         ("Компьютерные игры", "gaming")
+#     ]
+#     builder = InlineKeyboardBuilder()
+#
+#     for hobby_name, hobby_callback in hobbies:
+#         button_text = f"⚪️ {hobby_name}"
+#         builder.button(
+#             text=button_text,
+#             callback_data=HobbiesCallbackFactory(action="toggle", hobby_name=hobby_callback)
+#         )
+#         builder.adjust(2)
+#     builder.button(
+#         text="Подтвердить выбор", callback_data=HobbiesCallbackFactory(action="confirm")
+#     )
+#     return builder.as_markup()
