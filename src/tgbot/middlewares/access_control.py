@@ -26,6 +26,7 @@ from .exceptions import (
 
 
 # TODO: Проверить ещё забанен ли пользователь или нет
+# TODO: Надо делать один запрос и сохранять пользователя в состояние, чтобы на каждый запрос не пинговать сервер
 class AccessControlMiddleware(BaseMiddleware):
     def __init__(self, client: QueClient) -> None:
         self.client = client
