@@ -10,7 +10,7 @@ from aiogram import (
 )
 from redis.asyncio.client import Redis  # type: ignore
 
-from src.tgbot.middlewares.exceptions import (
+from src.tgbot.misc.exceptions import (
     CancelHandler,
     Throttled,
 )

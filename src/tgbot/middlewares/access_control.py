@@ -13,15 +13,14 @@ from que_sdk import (
     QueClient,
 )
 
+from src.tgbot.misc.exceptions import (
+    CancelHandler,
+)
 from src.tgbot.services import (
     welcoming_message,
 )
 from src.tgbot.types import (
     Handler,
-)
-
-from .exceptions import (
-    CancelHandler,
 )
 
 
@@ -38,7 +37,7 @@ class AccessControlMiddleware(BaseMiddleware):
             self,
             handler: Handler,
             event: TelegramObject,
-            data: dict[str, Any]
+            data: dict[str, Any],
     ) -> Handler | None:
         update = data.get("event_update")
         try:
