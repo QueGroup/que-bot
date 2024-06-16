@@ -31,30 +31,44 @@ def login_signup_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.row(
         types.KeyboardButton(text=_("📝 Создать аккаунт")),
-        types.KeyboardButton(text=_("🔑 Войти в аккаунт"), web_app=WebAppInfo(url="https://floppy-phones-camp.loca.lt")),
+        types.KeyboardButton(
+            text=_("🔑 Войти в аккаунт"), web_app=WebAppInfo(url="https://floppy-phones-camp.loca.lt")
+        ),
+    )
+    return builder.as_markup(resize_keyboard=True)
+
+
+def login_menu() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        types.KeyboardButton(
+            text=_("🔑 Войти в аккаунт"), web_app=WebAppInfo(url="https://floppy-phones-camp.loca.lt")
+        ),
     )
     return builder.as_markup(resize_keyboard=True)
 
 
 def gender_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-
     builder.row(
         types.KeyboardButton(text="♂ Мужской"),
         types.KeyboardButton(text="♀ Женский"),
     )
-
+    builder.row(
+        types.KeyboardButton(text="<< Вернуться назад")
+    )
     return builder.as_markup(resize_keyboard=True)
 
 
 def interested_in_gender_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-
     builder.row(
         types.KeyboardButton(text="♂ Парня"),
         types.KeyboardButton(text="♀ Девушку"),
     )
-
+    builder.row(
+        types.KeyboardButton(text="<< Вернуться назад")
+    )
     return builder.as_markup(resize_keyboard=True)
 
 
@@ -76,5 +90,46 @@ def hobbies_menu() -> types.ReplyKeyboardMarkup:
         builder.adjust(1, 2)
     builder.row(
         types.KeyboardButton(text="Подтвердить выбор"),
+        types.KeyboardButton(text="Очистить список"),
+        types.KeyboardButton(text="<< Вернуться назад")
     )
     return builder.as_markup(resize_keyboard=True)
+
+
+def get_location_menu() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.add(
+        types.KeyboardButton(
+            text=_("🗺 Определить автоматически"), request_location=True
+        ))
+    return builder.as_markup(resize_keyboard=True)
+
+
+def get_photo_from_user_menu() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        types.KeyboardButton(text="Взять из профиля")
+    )
+    builder.row(
+        types.KeyboardButton(text="<< Вернуться назад")
+    )
+    return builder.as_markup(resize_keyboard=True)
+
+
+def get_user_first_name() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        types.KeyboardButton(text="Взять из телеграмма")
+    )
+    builder.row(
+        types.KeyboardButton(text="<< Вернуться назад")
+    )
+    return builder.as_markup()
+
+
+def back_to_menu() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        types.KeyboardButton(text="<< Вернуться назад")
+    )
+    return builder.as_markup()
