@@ -9,6 +9,7 @@ from aiogram import (
 )
 from aiogram.filters import (
     Command,
+    StateFilter,
 )
 from aiogram.fsm.context import (
     FSMContext,
@@ -24,6 +25,9 @@ from src.tgbot.keyboards import (
     inline,
     reply,
 )
+from src.tgbot.misc import (
+    states,
+)
 
 user_router = Router()
 user_router.message.filter(
@@ -32,7 +36,9 @@ user_router.message.filter(
 
 
 @user_router.message(F.text == "👤 Аккаунт")
-async def user_handler(message: types.Message, state: FSMContext, **middleware_data: Any) -> None:
+@user_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.first_name))
+@user_router.callback_query(F.data == "back_to_user_menu")
+async def user_handler(obj: types.Message | types.CallbackQuery, state: FSMContext, **middleware_data: Any) -> None:
     que_client: QueClient = middleware_data.get("que-client")
     storage = await state.get_data()
     status_code, response = await que_client.get_user_me(access_token=storage.get("access_token"))
@@ -48,7 +54,12 @@ async def user_handler(message: types.Message, state: FSMContext, **middleware_d
     )
     profile_created = bool(response.get("profile"))
     await state.update_data({"id": response.get("id")})
-    await message.answer(text=text, reply_markup=inline.user_menu(is_profile=profile_created))
+    if isinstance(obj, types.Message):
+        if obj.text == "<< Вернуться назад":
+            await obj.answer(text="👤", reply_markup=reply.main_menu())
+        await obj.answer(text=text, reply_markup=inline.user_menu(is_profile=profile_created))
+    elif isinstance(obj, types.CallbackQuery):
+        await obj.message.edit_text(text=text, reply_markup=inline.user_menu(is_profile=profile_created))
 
 
 @user_router.message(F.text, Command("reactivate"))
@@ -61,14 +72,12 @@ async def user_activate_handler(message: types.Message, state: FSMContext, **mid
     await message.answer(text="Поздравляем! Вы восстановили аккаунт", reply_markup=reply.main_menu())
 
 
-# TODO: Чтобы у пользователя был выбор менять аккаунты, то мы должны сделать клавиатуру, в которой
-#  будут две кнопки: Войти и Войти по паролю.
 @user_router.callback_query(F.data == "user:signout")
 async def user_signout_handler(call: types.CallbackQuery, state: FSMContext) -> None:
     text = (
-        "Вы вышли из текущей сессии, чтобы войти используйте команду /start"
+        "Вы вышли из текущей сессии, чтобы войти в аккаунт используйте команду /start или кнопку ниже"
     )
-
+    # TODO: Проверить работоспособность
     await state.clear()
     await call.message.delete()
-    await call.message.answer(text=text, reply_markup=types.ReplyKeyboardRemove())
+    await call.message.answer(text=text, reply_markup=reply.login_menu())

@@ -51,51 +51,70 @@ async def profile_handler(call: types.CallbackQuery, state: FSMContext, **middle
 
 
 @profile_router.callback_query(F.data == "user:profile-create")
-async def profile_create_handler(call: types.CallbackQuery, state: FSMContext) -> None:
+@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.gender))
+async def profile_create_handler(obj: types.CallbackQuery | types.Message, state: FSMContext) -> None:
     text = (
         "Вам нужно пройти опрос, чтобы создать профиль:\n\n"
         "Напишите мне ваше имя, которое будут все видеть в анкете"
     )
-    # TODO: Добавить кнопку назад + использовать имя из телеграмма
-    await call.message.edit_text(text=text)
+    if isinstance(obj, types.Message):
+        await obj.answer(text=text, reply_markup=reply.get_user_first_name())
+    if isinstance(obj, types.CallbackQuery) and state is not None:
+        await obj.message.delete()
+        await obj.message.answer(text=text, reply_markup=reply.get_user_first_name())
     await state.set_state(states.RegistrationSG.first_name)
 
 
 @profile_router.message(F.text, StateFilter(states.RegistrationSG.first_name))
-async def input_first_name_handler(message: types.Message, state: FSMContext) -> None:
-    await state.update_data({"first_name": message.text})
+@profile_router.callback_query(F.data == "get_name_from_tg", StateFilter(states.RegistrationSG.first_name))
+async def input_first_name_handler(obj: types.Message | types.CallbackQuery, state: FSMContext) -> None:
     text = "Принято! Выберите ваш гендер"
-    await message.answer(text=text, reply_markup=reply.gender_menu())
+    first_name: str
+
+    if isinstance(obj, types.Message):
+        first_name = obj.text
+        await state.update_data({"first_name": first_name})
+        await obj.answer(text=text, reply_markup=reply.gender_menu())
+
+    if isinstance(obj, types.CallbackQuery):
+        first_name = obj.from_user.first_name
+        await state.update_data({"first_name": first_name})
+        await obj.message.delete()
+        await obj.message.answer(text=text, reply_markup=reply.gender_menu())
     await state.set_state(states.RegistrationSG.gender)
 
 
-@profile_router.message((F.text == "♂ Мужской" or F.text == "♀ Женский"), StateFilter(states.RegistrationSG.gender))
+@profile_router.message(F.text == "♂ Мужской", StateFilter(states.RegistrationSG.gender))
+@profile_router.message(F.text == "♀ Женский", StateFilter(states.RegistrationSG.gender))
+@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.about_me))
 async def input_gender_handler(message: types.Message, state: FSMContext) -> None:
     genders = {
         "♂ Мужской": "male",
         "♀ Женский": "female"
     }
-    await state.update_data({"gender": genders[message.text]})
+    if genders.get(message.text):
+        await state.update_data({"gender": genders[message.text]})
     text = (
         "Нажмите на кнопку ниже, чтобы определить ваше местоположение! Или напишите текстом"
     )
-    # TODO: Добавить кнопки: назад + определения местоположения
-    await message.answer(text=text)
+    # TODO: Добавить кнопку назад
+    await message.answer(text=text, reply_markup=reply.get_location_menu())
     await state.set_state(states.RegistrationSG.city)
 
 
 @profile_router.message(F.text, StateFilter(states.RegistrationSG.city))
+@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.interested_in))
 async def input_city_handler(message: types.Message, state: FSMContext) -> None:
     await state.update_data({"city": message.text})
     text = (
         "Отлично! Теперь напишите о себе"
     )
-    # TODO: Добавить кнопки отмены и назад
-    await message.answer(text=text)
+    await message.answer(text=text, reply_markup=reply.back_to_menu())
     await state.set_state(states.RegistrationSG.about_me)
 
 
 @profile_router.message(F.text, StateFilter(states.RegistrationSG.about_me))
+@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.hobbies))
 async def input_about_me_handler(message: types.Message, state: FSMContext) -> None:
     await state.update_data({"description": message.text})
     text = "Принято! Теперь выберите кого вы бы хотели найти"
@@ -103,14 +122,26 @@ async def input_about_me_handler(message: types.Message, state: FSMContext) -> N
     await state.set_state(states.RegistrationSG.interested_in)
 
 
-# TODO: Можно добавить в magic filter ограничение, F.text == парня и девушку
-@profile_router.message(F.text, StateFilter(states.RegistrationSG.interested_in))
+@profile_router.message(
+    F.text == "♂ Парня",
+    StateFilter(states.RegistrationSG.interested_in),
+)
+@profile_router.message(
+    F.text == "♀ Девушку",
+    StateFilter(states.RegistrationSG.interested_in),
+)
+@profile_router.message(
+    F.text == "<< Вернуться назад",
+    StateFilter(states.RegistrationSG.photos)
+)
 async def input_interested_in_handler(message: types.Message, state: FSMContext) -> None:
     genders = {
         "♂ Парня": "male",
         "♀ Девушку": "female",
     }
-    await state.update_data({"interested_in": genders[message.text]})
+    gender = message.text
+    if genders.get(gender):
+        await state.update_data({"interested_in": genders[gender]})
     text = (
         "Отлично! Выберите интересные для вас занятия"
     )
@@ -118,7 +149,6 @@ async def input_interested_in_handler(message: types.Message, state: FSMContext)
     await state.set_state(states.RegistrationSG.hobbies)
 
 
-# TODO: Добавить возможность очищать список интересов, если неправильно выбрал
 @profile_router.message(F.text, StateFilter(states.RegistrationSG.hobbies))
 async def input_hobbies_handler(message: types, state: FSMContext) -> None:
     storage = await state.get_data()
@@ -128,8 +158,14 @@ async def input_hobbies_handler(message: types, state: FSMContext) -> None:
         "И напоследок, пришлите одну или несколько своих фотографий"
     )
     if hobby_name == "Подтвердить выбор":
-        await message.answer(text=text, reply_markup=types.ReplyKeyboardRemove())
-        await state.set_state(states.RegistrationSG.photos)
+        if len(selected_interests) == 0:
+            await message.answer(text="Вы должны выбрать как минимум один интерес")
+        else:
+            await message.answer(text=text, reply_markup=reply.get_photo_from_user_menu())
+            await state.set_state(states.RegistrationSG.photos)
+    elif hobby_name == "Очистить список":
+        selected_interests = []
+        await state.update_data({"hobbies": selected_interests})
     else:
         selected_interests.append(hobby_name)
         await state.update_data({"hobbies": selected_interests})
@@ -137,8 +173,8 @@ async def input_hobbies_handler(message: types, state: FSMContext) -> None:
 
 # TODO: Дописать
 @profile_router.message(
-    states.RegistrationSG.photos,
-    F.content_type.in_([ContentType.PHOTO])
+    F.content_type.in_([ContentType.PHOTO]),
+    StateFilter(states.RegistrationSG.photos),
 )
 async def user_handle_album(
         message: types.Message,
