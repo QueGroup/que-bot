@@ -91,9 +91,10 @@ class TgBot:
 @dataclass(frozen=True, slots=True)
 class Miscellaneous:
     secret_key: str
-    api_id: int | None = None
-    api_hash: str | None = None
-    session_str: str | None = None
+    api_id: int | None
+    api_hash: str | None
+    session_str: str | None
+    yandex_map_api_key: str
 
     @staticmethod
     def from_env(env: Env) -> "Miscellaneous":
@@ -104,11 +105,13 @@ class Miscellaneous:
         api_id = env.int("API_ID")
         api_hash = env.str("API_HASH")
         session_str = env.str("SESSION_STR")
+        yandex_map_api_key = env.str("YANDEX_MAP_API_KEY")
         return Miscellaneous(
             secret_key=secret_key,
             api_id=api_id,
             api_hash=api_hash,
-            session_str=session_str
+            session_str=session_str,
+            yandex_map_api_key=yandex_map_api_key,
         )
 
 
