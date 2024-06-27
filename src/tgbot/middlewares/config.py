@@ -11,6 +11,9 @@ from aiogram.types import (
 from que_sdk import (
     QueClient,
 )
+from yandex_geocoder import (
+    Client,
+)
 
 from src.tgbot.config import (
     Config,
@@ -21,9 +24,15 @@ from src.tgbot.types import (
 
 
 class MiscMiddleware(BaseMiddleware):
-    def __init__(self, config: Config, client: QueClient) -> None:
+    def __init__(
+            self,
+            config: Config,
+            client: QueClient,
+            ya_client: Client
+    ) -> None:
         self.config = config
         self.client = client
+        self.ya_client = ya_client
 
     async def __call__(
             self,
@@ -33,4 +42,6 @@ class MiscMiddleware(BaseMiddleware):
     ) -> Any:
         data["config"] = self.config
         data["que-client"] = self.client
+        data["ya_client"] = self.ya_client
+
         return await handler(event, data)
