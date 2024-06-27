@@ -30,6 +30,9 @@ from que_sdk import (
     QueClient,
 )
 from redis.asyncio.client import Redis  # type: ignore
+from yandex_geocoder import (
+    Client,
+)
 
 from src.tgbot import (
     services,
@@ -83,11 +86,14 @@ def register_global_middlewares(
         config: Config,
         client: QueClient,
         redis: Redis,
+        i18n: I18n,
+        ya_client: Client
 ) -> None:
     logging.info("Setup middlewares...")
     middleware_types = [
-        MiscMiddleware(config, client),
+        MiscMiddleware(config, client, ya_client),
         AccessControlMiddleware(client=client),
+        ConstI18nMiddleware(locale="ru", i18n=i18n)
     ]
     # dp.message.middleware(ThrottlingMiddleware(redis))
     dp.message.middleware(AlbumMiddleware())
@@ -122,6 +128,7 @@ async def main() -> None:
     i18n = I18n(path=config.tg_bot.LOCALES_DIR, default_locale="ru", domain="messages")
     storage = get_storage(config)
     client = QueClient()
+    ya_client = Client(api_key=config.misc.yandex_map_api_key) # type: ignore
 
     redis = Redis(
         host=config.redis.host,
@@ -133,8 +140,8 @@ async def main() -> None:
 
     bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher(storage=storage)
-    ConstI18nMiddleware(locale="ru", i18n=i18n).setup(router=dp)
-    register_global_middlewares(dp, config, client, redis)
+
+    register_global_middlewares(dp, config, client, redis, i18n, ya_client)
     dp.include_routers(*routers_list)
     await services.set_default_commands(bot, config)
     await on_startup(bot, config.tg_bot.admin_ids)
