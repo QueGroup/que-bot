@@ -20,6 +20,7 @@ betterlogging = ">=0.2.1,<0.3.0"
 que-sdk = "^0.2.0"
 babel = "^2.15.0"
 yandex-geo = "^2.1.1"
+aiogram-calendar = "^0.5.0"
 
 
 [tool.poetry.group.dev.dependencies]
