@@ -74,7 +74,7 @@ class AccessControlMiddleware(BaseMiddleware):
                 datetime.datetime.now() - storage.get("timestamp") < datetime.timedelta(minutes=15)
         ):
 
-            status_code, response = storage.get("status_code"), storage.get("response")
+            status_code, response = storage.get("status_code"), storage.get("user")
         else:
             status_code, response = await self.client.get_user_me(
                 access_token=storage.get("access_token", "")
@@ -83,7 +83,7 @@ class AccessControlMiddleware(BaseMiddleware):
                 await state.update_data(
                     {
                         "status_code": status_code,
-                        "response": response,
+                        "user": response,
                         "timestamp": datetime.datetime.now()
                     }
                 )
