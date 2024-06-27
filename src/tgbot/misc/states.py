@@ -12,3 +12,4 @@ class RegistrationSG(state.StatesGroup):
     interested_in = state.State()
     hobbies = state.State()
     photos = state.State()
+    confirmation = state.State()
