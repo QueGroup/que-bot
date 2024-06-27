@@ -38,10 +38,14 @@ user_router.message.filter(
 @user_router.message(F.text == "👤 Аккаунт")
 @user_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.first_name))
 @user_router.callback_query(F.data == "back_to_user_menu")
-async def user_handler(obj: types.Message | types.CallbackQuery, state: FSMContext, **middleware_data: Any) -> None:
+async def user_handler(obj: types.TelegramObject, state: FSMContext, **middleware_data: Any) -> None:
     que_client: QueClient = middleware_data.get("que-client")
     storage = await state.get_data()
-    status_code, response = await que_client.get_user_me(access_token=storage.get("access_token"))
+    user = storage.get("user")
+    if user is None:
+        _, response = await que_client.get_user_me(access_token=storage.get("access_token"))
+    else:
+        response = user
     days = response.get("days_since_created")
     text = (
         "Имя пользователя: *{username}*\n"
@@ -57,6 +61,7 @@ async def user_handler(obj: types.Message | types.CallbackQuery, state: FSMConte
     if isinstance(obj, types.Message):
         if obj.text == "<< Вернуться назад":
             await obj.answer(text="👤", reply_markup=reply.main_menu())
+            await state.set_state(None)
         await obj.answer(text=text, reply_markup=inline.user_menu(is_profile=profile_created))
     elif isinstance(obj, types.CallbackQuery):
         await obj.message.edit_text(text=text, reply_markup=inline.user_menu(is_profile=profile_created))
