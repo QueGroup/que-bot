@@ -101,7 +101,10 @@ def get_location_menu() -> types.ReplyKeyboardMarkup:
     builder.add(
         types.KeyboardButton(
             text=_("🗺 Определить автоматически"), request_location=True
-        ))
+        ),
+        types.KeyboardButton(text="<< Вернуться назад")
+    )
+    builder.adjust(1)
     return builder.as_markup(resize_keyboard=True)
 
 
@@ -124,7 +127,7 @@ def get_user_first_name() -> types.ReplyKeyboardMarkup:
     builder.row(
         types.KeyboardButton(text="<< Вернуться назад")
     )
-    return builder.as_markup()
+    return builder.as_markup(resize_keyboard=True)
 
 
 def back_to_menu() -> types.ReplyKeyboardMarkup:
@@ -132,4 +135,12 @@ def back_to_menu() -> types.ReplyKeyboardMarkup:
     builder.row(
         types.KeyboardButton(text="<< Вернуться назад")
     )
-    return builder.as_markup()
+    return builder.as_markup(resize_keyboard=True)
+
+
+def confirmation_menu() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        types.KeyboardButton(text="✅ Да все хорошо!")
+    )
+    return builder.as_markup(resize_keyboard=True)
