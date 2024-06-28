@@ -21,7 +21,7 @@ que-sdk = "^0.2.3"
 babel = "^2.15.0"
 yandex-geo = "^2.1.1"
 aiogram-calendar = "^0.5.0"
-
+numpy = "1.26.4"
 
 [tool.poetry.group.dev.dependencies]
 telethon = "^1.35.0"
