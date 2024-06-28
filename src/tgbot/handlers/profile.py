@@ -50,6 +50,7 @@ from src.tgbot.keyboards import (
     reply,
 )
 from src.tgbot.misc import (
+    const,
     states,
 )
 
@@ -117,14 +118,11 @@ async def input_first_name_handler(
 async def input_gender_handler(message: types.Message, state: FSMContext) -> None:
     storage = await state.get_data()
     profile = storage.get("profile")
-    genders = {
-        "♂ Мужской": "male",
-        "♀ Женский": "female"
-    }
+
     current_year = datetime.datetime.now().year
     year = current_year - 18
-    if genders.get(message.text):
-        profile["gender"] = genders[message.text]
+    if const.genders.get(message.text):
+        profile["gender"] = const.genders[message.text]
         await state.update_data({"profile": profile})
     text = (
         "Теперь выберите дату своего рождения"
@@ -262,15 +260,11 @@ async def input_about_me_handler(message: types.Message, state: FSMContext) -> N
     StateFilter(states.RegistrationSG.photos)
 )
 async def input_interested_in_handler(message: types.Message, state: FSMContext) -> None:
-    genders = {
-        "♂ Парня": "male",
-        "♀ Девушку": "female",
-    }
     gender = message.text
     storage = await state.get_data()
     profile = storage.get("profile")
-    if genders.get(gender):
-        profile["interested_in"] = genders.get(gender)
+    if const.interested_genders.get(gender):
+        profile["interested_in"] = const.interested_genders.get(gender)
         await state.update_data({"profile": profile})
     text = (
         "Отлично! Выберите интересные для вас занятия"
