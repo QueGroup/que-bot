@@ -33,10 +33,6 @@ from aiogram.filters import (
 from aiogram.fsm.context import (
     FSMContext,
 )
-from aiogram.types import (
-    InputMediaPhoto,
-    ReplyKeyboardRemove,
-)
 from aiogram_calendar import (
     DialogCalendar,
     DialogCalendarCallback,
@@ -194,7 +190,7 @@ async def input_gender_handler(message: types.Message, state: FSMContext) -> Non
     text = (
         "Теперь выберите дату своего рождения"
     )
-    await message.answer(text=text, reply_markup=ReplyKeyboardRemove())
+    await message.answer(text=text, reply_markup=types.ReplyKeyboardRemove())
     await asyncio.sleep(0.25)
     await message.answer(
         text="Календарь:",
@@ -411,7 +407,7 @@ async def user_handle_album(
         return
 
     media_group = [
-        InputMediaPhoto(media=photo.photo[-1].file_id, caption=text if i == 0 else '')
+        types.InputMediaPhoto(media=photo.photo[-1].file_id, caption=text if i == 0 else '')
         for i, photo in enumerate(album)
     ]
     profile["folder_path"] = user_folder
