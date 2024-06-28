@@ -1,10 +1,12 @@
 import asyncio
+from concurrent.futures import (
+    ThreadPoolExecutor,
+)
 import datetime
 from decimal import (
     Decimal,
 )
-import logging
-import os
+import http
 from pathlib import (
     Path,
 )
@@ -12,6 +14,10 @@ from typing import (
     Any,
 )
 
+import aiofiles  # type: ignore
+from aiofiles import (
+    os,
+)
 from aiogram import (
     Bot,
     F,
@@ -28,6 +34,7 @@ from aiogram.fsm.context import (
     FSMContext,
 )
 from aiogram.types import (
+    InputMediaPhoto,
     ReplyKeyboardRemove,
 )
 from aiogram_calendar import (
@@ -38,12 +45,18 @@ from aiogram_calendar import (
 from que_sdk import (
     QueClient,
 )
+from que_sdk.schemas import (
+    ProfileCreateSchema,
+)
 from yandex_geocoder import (
     Client,
 )
 
 from src.tgbot.filters import (
     ChatTypeFilter,
+)
+from src.tgbot.handlers.utils import (
+    path_join,
 )
 from src.tgbot.keyboards import (
     inline,
@@ -53,11 +66,65 @@ from src.tgbot.misc import (
     const,
     states,
 )
+from src.tgbot.services import (
+    classification_image,
+)
 
 profile_router = Router()
 profile_router.message.filter(
     ChatTypeFilter(chat_type=["private"])
 )
+
+
+def profile_text(profile: dict[str, Any]) -> str:
+    text = (
+        f"*Имя:* {profile['first_name']}\n"
+        f"*Пол:* {const.genders[profile['gender']]}\n"
+        f"*Дата рождения:* {profile['birthdate']}\n"
+        f"*Город:* {profile['city']}\n"
+        f"*О себе:* {profile['description']}\n"
+        f"*Хочешь найти:* {const.interested_genders[profile['interested_in']]}\n"
+        f"*Хобби:* {', '.join(profile['hobbies'])}\n"
+    )
+    return text
+
+
+async def send_photos(folder_path: str, c: QueClient, token: str) -> None:
+    for file_name in await os.listdir(folder_path):
+        file_path = path_join(folder_path, file_name)
+        async with aiofiles.open(file_path, "rb") as file:
+            file_data = await file.read()
+            status_code, response = await c.upload_photo(access_token=token, file=file_data)
+            if status_code != 200:
+                raise Exception(f"Failed to upload photo {file_name}: {response}")
+
+
+async def delete_files_in_folder(folder_path: str) -> None:
+    filenames = await aiofiles.os.listdir(folder_path)
+    tasks = [aiofiles.os.remove(path_join(folder_path, filename)) for filename in filenames]
+    await asyncio.gather(*tasks)
+
+
+async def classify_images(user_folder: str) -> list[Any]:
+    async def classify_image(file_path: str) -> bool:
+        loop = asyncio.get_running_loop()
+        with ThreadPoolExecutor() as pool:
+            return await loop.run_in_executor(pool, classification_image, file_path)
+
+    filenames = await aiofiles.os.listdir(user_folder)
+    tasks = [classify_image(path_join(user_folder, filename)) for filename in filenames]
+    # noinspection PyTypeChecker
+    return await asyncio.gather(*tasks)
+
+
+async def download_photos(bot: Bot, album: list[types.Message], user_folder: str) -> None:
+    tasks = []
+    for i, photo in enumerate(album):
+        file_id = photo.photo[-1].file_id
+        file = await bot.get_file(file_id=file_id)
+        file_destination = path_join(user_folder, f"photo_{file_id}.jpg")
+        tasks.append(bot.download_file(file_path=file.file_path, destination=file_destination))
+    await asyncio.gather(*tasks)
 
 
 @profile_router.callback_query(F.data == "user:profile")
@@ -165,9 +232,8 @@ async def process_dialog_calendar(
             if selected:
                 current_date = datetime.datetime.now().date()
                 if date.date() < current_date:
-                    profile["birthday"] = date.strftime("%Y-%m-%d")
+                    profile["birthdate"] = date.strftime("%Y-%m-%d")
                     await state.update_data({"profile": profile})
-
                     await call.message.answer(text=text, reply_markup=reply.get_location_menu())
                     await state.set_state(states.RegistrationSG.city)
                 else:
@@ -184,9 +250,9 @@ async def process_dialog_calendar(
 )
 async def handle_user_location(message: types.Message, state: FSMContext, **middleware_data: Any) -> None:
     ya_client: Client = middleware_data.get("ya_client")
-    longitude = Decimal(message.location.longitude)
-    latitude = Decimal(message.location.latitude)
-    city = await ya_client.aioaddress(longitude=longitude, latitude=latitude, level="city")
+    longitude = message.location.longitude
+    latitude = message.location.latitude
+    city = await ya_client.aioaddress(longitude=Decimal(longitude), latitude=Decimal(latitude), level="city")
     storage = await state.get_data()
     profile = storage.get("profile")
     profile.update({
@@ -217,8 +283,8 @@ async def input_city_handler(message: types.Message, state: FSMContext, **middle
     ).format(city=city)
     profile.update({
         "city": city,
-        "longitude": longitude,
-        "latitude": latitude
+        "longitude": float(longitude),
+        "latitude": float(latitude)
     })
 
     await state.update_data({"profile": profile})
@@ -276,7 +342,7 @@ async def input_interested_in_handler(message: types.Message, state: FSMContext)
 @profile_router.message(F.text, StateFilter(states.RegistrationSG.hobbies))
 async def input_hobbies_handler(message: types, state: FSMContext) -> None:
     storage = await state.get_data()
-    selected_interests = storage.get("hobbies", [])
+    selected_interests = storage.get("profile").get("hobbies", [])
     profile = storage.get("profile")
     hobby_name = message.text
     text = (
@@ -311,6 +377,7 @@ async def get_photo_from_user(message: types.Message, state: FSMContext, bot: Bo
 
 
 # https://ru.stackoverflow.com/questions/1456135/
+# TODO: Добавить обработку одной фотографии
 @profile_router.message(
     F.content_type.in_([ContentType.PHOTO]),
     StateFilter(states.RegistrationSG.photos),
@@ -323,39 +390,35 @@ async def user_handle_album(
 ) -> None:
     storage = await state.get_data()
     profile = storage.get("profile")
+    text = profile_text(profile)
     tg_id = message.from_user.id
     root = Path(__file__).resolve().parent.parent.parent.parent
     user_folder = rf"{root}/photos/{tg_id}/"
-    if not os.path.exists(user_folder):
-        os.mkdir(user_folder)
+
+    if not await os.path.exists(user_folder):
+        await os.mkdir(user_folder)
     if len(album) > 5:
-        await message.answer(text="Вы превысили максимальное количество фотографий. Фотографий должно быть не больше 5")
+        await message.answer(text="Превышено максимальное количество фото: не более 5")
         return
-    for msg in album:
-        file_id = msg.photo[-1].file_id
-        file = await bot.get_file(file_id=file_id)
-        file_name = f"photo_{msg.photo[-1].file_id}.jpg"
-        file_destination = os.path.join(user_folder, file_name)
-        await bot.download_file(file_path=file.file_path, destination=file_destination)
-    logging.info("Фотографии сохранены")
+
+    await download_photos(bot, album, user_folder)
+
+    is_nude = await classify_images(user_folder)
+
+    if any(is_nude):
+        await message.answer(text="Система обнаружила наготу в фотографиях. Попробуйте ещё раз")
+        await delete_files_in_folder(folder_path=user_folder)
+        return
+
+    media_group = [
+        InputMediaPhoto(media=photo.photo[-1].file_id, caption=text if i == 0 else '')
+        for i, photo in enumerate(album)
+    ]
     profile["folder_path"] = user_folder
     await state.update_data({"profile": profile})
-    profile = (await state.get_data()).get("profile")
-    text = (
-        "*Подтвердите корректность данных:*\n\n"
-        ""
-    )
-
-    await message.answer(text=text, reply_markup=reply.confirmation_menu())
-
-
-async def send_photos(folder_path: str, c: QueClient, token: str) -> None:
-    for file_name in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, file_name)
-        with open(file_path, "rb") as file:
-            status_code, response = await c.upload_photo(access_token=token, file=file)
-            if status_code != 200:
-                raise Exception(f"Failed to upload photo {file_name}: {response}")
+    await message.answer_media_group(media=media_group)
+    await message.answer(text="Подтвердите корректность данных", reply_markup=reply.confirmation_menu())
+    await state.set_state(states.RegistrationSG.confirmation)
 
 
 @profile_router.message(F.text == "✅ Да все хорошо!", StateFilter(states.RegistrationSG.confirmation))
@@ -363,5 +426,26 @@ async def send_profile_data_to_server(message: types.Message, state: FSMContext,
     que_client: QueClient = middleware_data.get("que-client")
     storage = await state.get_data()
     profile = storage.get("profile")
-    await send_photos(c=que_client, token=storage.get("access_token"), folder_path=profile.get("folder_path"))
-    await message.answer("Поздравляем, вы создали профиль")
+    status_code, response = await que_client.create_profile(
+        data_in=ProfileCreateSchema(
+            first_name=profile.get("first_name"),
+            gender=profile.get("gender"),
+            city=profile.get("city"),
+            latitude=profile.get("latitude"),
+            longitude=profile.get("longitude"),
+            birthdate=profile.get("birthdate"),
+            description=profile.get("description"),
+            interested_in=profile.get("interested_in"),
+            hobbies=profile.get("hobbies")
+        ),
+        access_token=storage.get("access_token")
+    )
+    if status_code == http.HTTPStatus.CREATED:
+        await send_photos(c=que_client, token=storage.get("access_token"), folder_path=profile.get("folder_path"))
+        await asyncio.sleep(0.1)
+        await message.answer(text="Поздравляем, вы создали профиль", reply_markup=reply.main_menu())
+    else:
+        await message.answer(text="Произошла какая-то ошибка на стороне сервера. Попробуйте еще раз немного позже")
+    await delete_files_in_folder(folder_path=profile.get("folder_path"))
+    await state.update_data({"profile": None})
+    await state.update_data({"user": None})
