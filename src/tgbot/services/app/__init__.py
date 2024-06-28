@@ -1,6 +1,9 @@
 from . import (
     broadcaster,
 )
+from .nude_classifier import (
+    classification_image,
+)
 from .set_bot_commands import (
     set_default_commands,
 )
@@ -24,4 +27,5 @@ __all__ = (
     "handle_send_start_message",
     "set_default_commands",
     "handle_login",
+    "classification_image",
 )
