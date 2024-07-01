@@ -32,7 +32,6 @@ def user_menu(is_profile: bool) -> types.InlineKeyboardMarkup:
         )
     builder.row(
         types.InlineKeyboardButton(text=_("Изменить"), callback_data="user:edit"),
-        types.InlineKeyboardButton(text=_("Устройства"), callback_data="user:session")
     )
     builder.row(
         types.InlineKeyboardButton(text=_("🔙 Выйти из аккаунта"), callback_data="user:signout")

@@ -111,9 +111,6 @@ def get_location_menu() -> types.ReplyKeyboardMarkup:
 def get_photo_from_user_menu() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.row(
-        types.KeyboardButton(text="Взять из профиля")
-    )
-    builder.row(
         types.KeyboardButton(text="<< Вернуться назад")
     )
     return builder.as_markup(resize_keyboard=True)
