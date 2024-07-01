@@ -44,15 +44,15 @@ from src.tgbot.config import (
 from src.tgbot.handlers import (
     routers_list,
 )
-from src.tgbot.middlewares import (  # ThrottlingMiddleware,
+from src.tgbot.middlewares import (  # type: ignore
     AccessControlMiddleware,
     AlbumMiddleware,
-    MiscMiddleware,
+    DIMiddleware,
 )
 
 
 async def on_startup(bot: Bot, admin_ids: Sequence[int]) -> None:
-    await services.broadcaster.broadcast(bot, list(admin_ids), "Бот запущен")
+    await services.broadcast(bot, list(admin_ids), "Бот запущен")  # type: ignore
 
 
 def setup_logging() -> None:
@@ -91,7 +91,7 @@ def register_global_middlewares(
 ) -> None:
     logging.info("Setup middlewares...")
     middleware_types = [
-        MiscMiddleware(config, client, ya_client),
+        DIMiddleware(config, client, ya_client),
         AccessControlMiddleware(client=client),
         ConstI18nMiddleware(locale="ru", i18n=i18n)
     ]
@@ -128,7 +128,7 @@ async def main() -> None:
     i18n = I18n(path=config.tg_bot.LOCALES_DIR, default_locale="ru", domain="messages")
     storage = get_storage(config)
     client = QueClient()
-    ya_client = Client(api_key=config.misc.yandex_map_api_key)  # type: ignore
+    ya_client = Client(api_key=config.misc.yandex_map_api_key)
 
     redis = Redis(
         host=config.redis.host,

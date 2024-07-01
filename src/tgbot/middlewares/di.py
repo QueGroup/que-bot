@@ -23,7 +23,7 @@ from src.tgbot.types import (
 )
 
 
-class MiscMiddleware(BaseMiddleware):
+class DIMiddleware(BaseMiddleware):
     def __init__(
             self,
             config: Config,
