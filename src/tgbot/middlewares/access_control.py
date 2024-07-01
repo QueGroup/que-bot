@@ -18,11 +18,11 @@ from que_sdk import (
     QueClient,
 )
 
+from src.tgbot.misc import (
+    messages,
+)
 from src.tgbot.misc.exceptions import (
     CancelHandler,
-)
-from src.tgbot.services import (
-    welcoming_message,
 )
 from src.tgbot.types import (
     Handler,
@@ -32,7 +32,6 @@ from src.tgbot.types import (
 class AccessControlMiddleware(BaseMiddleware):
     def __init__(self, client: QueClient) -> None:
         self.client = client
-        self.text_deactivate = welcoming_message(message_type="deactivate_user")
         self.text_unauthorized = "Вы не вошли в аккаунт"
 
     async def __call__(
@@ -96,7 +95,7 @@ class AccessControlMiddleware(BaseMiddleware):
 
     async def _handle_cancel_event(self, event: TelegramObject, e: CancelHandler) -> None:
         response_texts = {
-            "deactivate": self.text_deactivate,
+            "deactivate": messages.deactivate_user,
             "unauthorized": self.text_unauthorized,
         }
         response_text = response_texts.get(e.title)

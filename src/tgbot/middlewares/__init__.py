@@ -22,8 +22,8 @@ from .access_control import (
 from .album import (
     AlbumMiddleware,
 )
-from .config import (
-    MiscMiddleware,
+from .di import (
+    DIMiddleware,
 )
 from .throttling import (
     ThrottlingMiddleware,
@@ -39,7 +39,7 @@ __all__ = (
     "ThrottlingMiddleware",
     # "SupportMiddleware",
     # "LinkCheckMiddleware",
-    "MiscMiddleware",
+    "DIMiddleware",
     "AccessControlMiddleware",
     "AlbumMiddleware",
 )

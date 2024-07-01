@@ -1,7 +1,6 @@
 import http
 from typing import (
     Any,
-    Literal,
 )
 
 from aiogram import (
@@ -25,23 +24,9 @@ from src.tgbot.keyboards import (
     reply,
 )
 from src.tgbot.misc import (
+    messages,
     security,
 )
-
-
-def welcoming_message(
-        message_type: Literal["welcome", "greet_auth_user", "deactivate_user"],
-        **kwargs: Any,
-) -> str:
-    messages = {
-        "welcome": "🎉 Добро пожаловать, {username}! Вы создали новый аккаунт",
-        "greet_auth_user": "👋 Привет {username} вы вошли в аккаунт",
-        "deactivate_user": ("🛑 К сожалению, ваш аккаунт был деактивирован, и доступ к приложению ограничен.\n"
-                            "Чтобы возобновить работу с нашим приложением, пожалуйста, активируйте аккаунт.\n"
-                            "Чтобы активировать аккаунт, используйте команду /reactivate."),
-    }
-
-    return messages[message_type].format(**kwargs)
 
 
 async def get_user_data(client: QueClient, storage: dict[str, Any]) -> tuple[http.HTTPStatus, dict[str, Any]]:
@@ -57,7 +42,7 @@ async def handle_send_start_message(
 ) -> None:
     username = response.get("username") if response.get("username") is not None else message.from_user.username
     await message.answer(
-        text=welcoming_message(message_type="greet_auth_user", username=username),
+        text=messages.greet_auth_user.format(username=username),
         reply_markup=reply.main_menu()
     )
 
@@ -93,7 +78,7 @@ async def handle_signup(
     )
 
     await message.answer(
-        text=welcoming_message(message_type="welcome", username=username),
+        text=messages.welcome.format(username=username),
         reply_markup=reply.main_menu()
     )
     await handle_login_t_me(client=client, state=state, config=config, message=message)
@@ -102,14 +87,8 @@ async def handle_signup(
 
 
 async def handle_not_founded_user(message: types.Message) -> None:
-    text = _(
-        "🔍 Извините, мы не смогли найти ваш аккаунт.\nВы можете создать новый "
-        "аккаунт, нажав на кнопку 'Создать аккаунт' ниже.\nили войти в свой "
-        "аккаунт, используя ваш логин и пароль."
-
-    )
     await message.answer(
-        text=text,
+        text=messages.not_found_user,
         reply_markup=reply.login_signup_menu()
     )
 
@@ -136,9 +115,6 @@ async def handle_login(
         )
     if status_code == http.HTTPStatus.UNAUTHORIZED:
         await message.answer(
-            text=_(
-                "🔐 Ой, кажется, вы ввели неправильный логин или пароль. Пожалуйста, проверьте "
-                "введенные данные и попробуйте снова."
-            )
+            text=messages.invalid_credentials
         )
     return status_code, response

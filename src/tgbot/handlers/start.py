@@ -35,6 +35,9 @@ from src.tgbot.filters import (
 from src.tgbot.keyboards import (
     inline,
 )
+from src.tgbot.misc import (
+    messages,
+)
 
 start_router = Router()
 start_router.message.filter(
@@ -56,7 +59,7 @@ async def start_handler(message: types.Message, state: FSMContext, **middleware_
     if status_code == http.HTTPStatus.BAD_REQUEST:
         code = response.get("detail").get("code")
         if code == 3002:
-            await message.answer(text=services.welcoming_message(message_type="deactivate_user"))
+            await message.answer(text=messages.deactivate_user)
     else:
         if status_code != http.HTTPStatus.UNAUTHORIZED:
             await services.handle_send_start_message(message=message, response=response)
