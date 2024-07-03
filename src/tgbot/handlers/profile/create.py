@@ -47,38 +47,18 @@ from yandex_geocoder import (
 from src.tgbot import (
     services,
 )
-from src.tgbot.filters import (
-    ChatTypeFilter,
-)
 from src.tgbot.keyboards import (
-    inline,
     reply,
 )
 from src.tgbot.misc import (
     states,
 )
 
-profile_router = Router()
-profile_router.message.filter(
-    ChatTypeFilter(chat_type=["private"])
-)
+create_profile_router = Router()
 
 
-@profile_router.callback_query(F.data == "user:profile")
-async def profile_handler(call: types.CallbackQuery, state: FSMContext, **middleware_data: Any) -> None:
-    que_client: QueClient = middleware_data.get("que-client")
-    storage = await state.get_data()
-    # TODO: Нужно сделать кэш на время, чтобы постоянно не отправлять запросы на сервер
-    _, profile = await que_client.get_profile(user_id=storage.get("id"), access_token=storage.get("access_token"))
-    # await call.message.delete()
-    # await call.message.answer_photo()
-    await call.message.edit_text(
-        text="Ваш прфиль: {profile_id}".format(profile_id=profile.get("id")), reply_markup=inline.profile_menu()
-    )
-
-
-@profile_router.callback_query(F.data == "user:profile-create")
-@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.gender))
+@create_profile_router.callback_query(F.data == "user:profile-create")
+@create_profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.gender))
 async def profile_create_handler(obj: types.TelegramObject, state: FSMContext) -> None:
     text = (
         "Вам нужно пройти опрос, чтобы создать профиль:\n\n"
@@ -93,11 +73,11 @@ async def profile_create_handler(obj: types.TelegramObject, state: FSMContext) -
     await state.set_state(states.RegistrationSG.first_name)
 
 
-@profile_router.message(F.text, StateFilter(states.RegistrationSG.first_name))
+@create_profile_router.message(F.text, StateFilter(states.RegistrationSG.first_name))
 async def input_first_name_handler(
         obj: types.TelegramObject,
         state: FSMContext,
-        bot: Bot
+        bot: Bot,
 ) -> None:
     text = "Принято! Выберите ваш гендер"
     first_name: str
@@ -117,9 +97,9 @@ async def input_first_name_handler(
     await state.set_state(states.RegistrationSG.gender)
 
 
-@profile_router.message(F.text == "♂ Мужской", StateFilter(states.RegistrationSG.gender))
-@profile_router.message(F.text == "♀ Женский", StateFilter(states.RegistrationSG.gender))
-@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.city))
+@create_profile_router.message(F.text == "♂ Мужской", StateFilter(states.RegistrationSG.gender))
+@create_profile_router.message(F.text == "♀ Женский", StateFilter(states.RegistrationSG.gender))
+@create_profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.city))
 async def input_gender_handler(message: types.Message, state: FSMContext) -> None:
     storage = await state.get_data()
     profile = storage.get("profile")
@@ -136,7 +116,7 @@ async def input_gender_handler(message: types.Message, state: FSMContext) -> Non
         "Теперь выберите дату своего рождения"
     )
     await message.answer(text=text, reply_markup=types.ReplyKeyboardRemove())
-    await asyncio.sleep(0.25)
+    await asyncio.sleep(0.15)
     await message.answer(
         text="Календарь:",
         reply_markup=await DialogCalendar(
@@ -146,11 +126,11 @@ async def input_gender_handler(message: types.Message, state: FSMContext) -> Non
     await state.set_state(states.RegistrationSG.birthday)
 
 
-@profile_router.callback_query(
+@create_profile_router.callback_query(
     DialogCalendarCallback.filter(),
     StateFilter(states.RegistrationSG.birthday)
 )
-@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.about_me))
+@create_profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.about_me))
 async def process_dialog_calendar(
         obj: types.TelegramObject,
         state: FSMContext,
@@ -185,7 +165,7 @@ async def process_dialog_calendar(
         await state.set_state(states.RegistrationSG.city)
 
 
-@profile_router.message(
+@create_profile_router.message(
     F.content_type.in_([ContentType.LOCATION]),
     StateFilter(states.RegistrationSG.city),
 )
@@ -209,8 +189,8 @@ async def handle_user_location(message: types.Message, state: FSMContext, **midd
     await state.set_state(states.RegistrationSG.about_me)
 
 
-@profile_router.message(F.text != "✅ Да все хорошо!", StateFilter(states.RegistrationSG.city))
-@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.interested_in))
+@create_profile_router.message(F.text != "✅ Да все хорошо!", StateFilter(states.RegistrationSG.city))
+@create_profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.interested_in))
 async def input_city_handler(message: types.Message, state: FSMContext, **middleware_data: Any) -> None:
     ya_client: Client = middleware_data.get("ya_client")
     longitude, latitude = await ya_client.aiocoordinates(message.text)
@@ -232,7 +212,7 @@ async def input_city_handler(message: types.Message, state: FSMContext, **middle
     await message.answer(text=text, reply_markup=reply.confirmation_menu())
 
 
-@profile_router.message(F.text == "✅ Да все хорошо!", StateFilter(states.RegistrationSG.city))
+@create_profile_router.message(F.text == "✅ Да все хорошо!", StateFilter(states.RegistrationSG.city))
 async def handle_confirmation_city(message: types.Message, state: FSMContext) -> None:
     text = (
         "Отлично! Теперь напишите о себе"
@@ -241,8 +221,8 @@ async def handle_confirmation_city(message: types.Message, state: FSMContext) ->
     await state.set_state(states.RegistrationSG.about_me)
 
 
-@profile_router.message(F.text, StateFilter(states.RegistrationSG.about_me))
-@profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.hobbies))
+@create_profile_router.message(F.text, StateFilter(states.RegistrationSG.about_me))
+@create_profile_router.message(F.text == "<< Вернуться назад", StateFilter(states.RegistrationSG.hobbies))
 async def input_about_me_handler(message: types.Message, state: FSMContext) -> None:
     storage = await state.get_data()
     profile = storage.get("profile")
@@ -254,15 +234,15 @@ async def input_about_me_handler(message: types.Message, state: FSMContext) -> N
     await state.set_state(states.RegistrationSG.interested_in)
 
 
-@profile_router.message(
+@create_profile_router.message(
     F.text == "♂ Парня",
     StateFilter(states.RegistrationSG.interested_in),
 )
-@profile_router.message(
+@create_profile_router.message(
     F.text == "♀ Девушку",
     StateFilter(states.RegistrationSG.interested_in),
 )
-@profile_router.message(
+@create_profile_router.message(
     F.text == "<< Вернуться назад",
     StateFilter(states.RegistrationSG.photos)
 )
@@ -284,7 +264,7 @@ async def input_interested_in_handler(message: types.Message, state: FSMContext)
     await state.set_state(states.RegistrationSG.hobbies)
 
 
-@profile_router.message(F.text, StateFilter(states.RegistrationSG.hobbies))
+@create_profile_router.message(F.text, StateFilter(states.RegistrationSG.hobbies))
 async def input_hobbies_handler(message: types, state: FSMContext) -> None:
     storage = await state.get_data()
     selected_interests = storage.get("profile").get("hobbies", [])
@@ -310,7 +290,7 @@ async def input_hobbies_handler(message: types, state: FSMContext) -> None:
 
 
 # https://ru.stackoverflow.com/questions/1456135/
-@profile_router.message(
+@create_profile_router.message(
     F.content_type.in_([ContentType.PHOTO]),
     StateFilter(states.RegistrationSG.photos),
 )
@@ -324,7 +304,9 @@ async def user_handle_album(
     profile = storage.get("profile")
     text = services.profile_text(profile)
     telegram_id = message.from_user.id
-    root = Path(__file__).resolve().parent.parent.parent.parent
+    # Если изменяем расположение файла, то еще нужно изменить root
+    # TODO: Надо бы перенести в services
+    root = Path(__file__).resolve().parent.parent.parent.parent.parent
     user_folder = rf"{root}/photos/{telegram_id}/"
     profile_service = services.ProfileService(user_folder)
     censor_warning_text = "Система обнаружила наготу в фотографиях. Попробуйте ещё раз"
@@ -361,7 +343,7 @@ async def user_handle_album(
     await state.set_state(states.RegistrationSG.confirmation)
 
 
-@profile_router.message(F.text == "✅ Да все хорошо!", StateFilter(states.RegistrationSG.confirmation))
+@create_profile_router.message(F.text == "✅ Да все хорошо!", StateFilter(states.RegistrationSG.confirmation))
 async def send_profile_data_to_server(message: types.Message, state: FSMContext, **middleware_data: Any) -> None:
     que_client: QueClient = middleware_data.get("que-client")
     storage = await state.get_data()
