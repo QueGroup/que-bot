@@ -141,3 +141,12 @@ def confirmation_menu() -> types.ReplyKeyboardMarkup:
         types.KeyboardButton(text="✅ Да все хорошо!")
     )
     return builder.as_markup(resize_keyboard=True)
+
+
+def profile_menu() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        types.KeyboardButton(text="✏️ Изменить"),
+        types.KeyboardButton(text="🗑 Удалить")
+    )
+    return builder.as_markup(resize_keyboard=True)
