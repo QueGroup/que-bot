@@ -51,6 +51,7 @@ def profile_text(profile: dict[str, Any]) -> str:
 
 class ProfileService:
 
+    # TODO: Убрать из параметров folder_path, а задать его прямо в __init__
     def __init__(
             self,
             folder_path: str
