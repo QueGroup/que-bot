@@ -36,3 +36,4 @@ async def conv(config: Miscellaneous) -> Conversation:
     await client.connect()
     async with client.conversation("@TestingDatingbottestbot", timeout=5) as conv:
         yield conv
+    await client.disconnect()
