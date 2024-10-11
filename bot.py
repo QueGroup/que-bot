@@ -44,7 +44,7 @@ from src.tgbot.config import (
 from src.tgbot.handlers import (
     routers_list,
 )
-from src.tgbot.middlewares import (  # type: ignore
+from src.tgbot.middlewares import (
     AccessControlMiddleware,
     AlbumMiddleware,
     DIMiddleware,
@@ -52,7 +52,7 @@ from src.tgbot.middlewares import (  # type: ignore
 
 
 async def on_startup(bot: Bot, admin_ids: Sequence[int]) -> None:
-    await services.broadcast(bot, list(admin_ids), "Бот запущен")  # type: ignore
+    await services.broadcast(bot, list(admin_ids), "Бот запущен")
 
 
 def setup_logging() -> None:
@@ -150,7 +150,7 @@ async def main() -> None:
 
 if __name__ == "__main__":
     try:
-        # FIXME: Почему-то с редисом asyncio.run(main()) не работает
-        asyncio.get_event_loop().run_until_complete(main())
+        with asyncio.Runner() as runner:
+            runner.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.error("Бот был выключен!")
