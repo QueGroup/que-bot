@@ -37,15 +37,50 @@ def profile_text(profile: dict[str, Any]) -> str:
         "female": "Девушку",
     }
 
+    if 'age' in profile:
+        age = profile['age']
+    elif 'birthdate' in profile:
+        import datetime
+        birthdate = datetime.datetime.strptime(profile['birthdate'], '%Y-%m-%d')
+        age = datetime.datetime.now().year - birthdate.year
+    else:
+        age = 'Не указан'
+    if profile["description"]:
+        description = profile["description"]
+    else:
+        description = "Пусть"
+
     text = (
         f"*Имя:* {profile['first_name']}\n"
         f"*Пол:* {genders[profile['gender']]}\n"
-        f"*Дата рождения:* {profile['birthdate']}\n"
+        f"*Возраст:* {age} лет\n"
         f"*Город:* {profile['city']}\n"
-        f"*О себе:* {profile['description']}\n"
+        f"*О себе:* {description}\n"
         f"*Хочешь найти:* {interested_genders[profile['interested_in']]}\n"
         f"*Хобби:* {', '.join(profile['hobbies'])}\n"
     )
+    return text
+
+
+def public_profile_text(profile: dict[str, Any]) -> str:
+    if 'age' in profile:
+        age = profile['age']
+    elif 'birthdate' in profile:
+        import datetime
+        birthdate = datetime.datetime.strptime(profile['birthdate'], '%Y-%m-%d')
+        age = datetime.datetime.now().year - birthdate.year
+    else:
+        age = 'Не указан'
+
+    if profile['description']:
+        text = (
+            f"*{profile['first_name']}*, {age} лет, {profile['city']} — "
+            f"{profile['description']}\n\n"
+        )
+    else:
+        text = (
+            f"*{profile['first_name']}*, {age} лет, {profile['city']}\n"
+        )
     return text
 
 
@@ -63,7 +98,9 @@ class ProfileService:
             file_path = misc.os_path_join(self.folder_path, file_name)
             async with aiofiles.open(file_path, "rb") as file:
                 file_data = await file.read()
-                status_code, response = await client.upload_photo(access_token=access_token, file=file_data)
+                status_code, response = await client.upload_photo(
+                    access_token=access_token, file=file_data, filename=file_name,
+                )
                 if status_code != 200:
                     raise Exception(f"Failed to upload photo {file_name}: {response}")
 

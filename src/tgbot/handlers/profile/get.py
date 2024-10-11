@@ -21,10 +21,11 @@ from src.tgbot.keyboards import (
     reply,
 )
 
-get_profile_router = Router()
+get_router = Router()
 
 
-@get_profile_router.callback_query(F.data == "user:profile")
+@get_router.callback_query(F.data == "user:profile")
+@get_router.callback_query(F.data == "back_to_profile")
 async def profile_handler(call: types.CallbackQuery, state: FSMContext, **middleware_data: Any) -> None:
     que_client: QueClient = middleware_data.get("que-client")
     storage = await state.get_data()
@@ -37,7 +38,7 @@ async def profile_handler(call: types.CallbackQuery, state: FSMContext, **middle
         for i, photo in enumerate(photos)
     ]
     await call.message.delete()
-    await call.message.answer(text="💫", reply_markup=reply.profile_menu())  # type: ignore
+    await call.message.answer(text="💫", reply_markup=reply.profile_menu())
     await call.message.answer_media_group(
         media=media_group,
     )
