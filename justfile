@@ -1,4 +1,4 @@
-set shell := ["powershell.exe", "-c"]
+# set shell := ["powershell.exe", "-c"]
 
 # Show help message
 PHONY: help
@@ -27,7 +27,14 @@ isort:
 	@echo "🔄 Running isort..."
 	@poetry run isort $(git ls-files '*.py')
 
+black:
+    @poetry run black $(git ls-files '*.py')
+
 # Audit packages
 audit:
 	@echo "🔍 Auditing packages..."
 	@pip-audit .
+
+# Run pre-commit lint
+lint:
+    @pre-commit run --all-files

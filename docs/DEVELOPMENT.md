@@ -7,7 +7,7 @@
     - [Manually](#wheelchair-manually)
         - [requirements](#with-requirements)
         - [poetry](#with-poetry)
-  - [Localization](#globe_with_meridians-i18n)
+    - [Localization](#globe_with_meridians-i18n)
 - [Tests](#test_tube-tests)
 
 ## :construction_worker: Getting Started
@@ -17,25 +17,15 @@
 First, rename the file `.env.dist` to `.env`.\
 Afterward, fill it with the required data.
 
-| Variable          | Type | Importance | Description                                                                             |
-|-------------------|------|------------|-----------------------------------------------------------------------------------------|
-| BOT_TOKEN         | str  | True       | Bot token                                                                               |
-| ADMINS            | list | True       | list of admins id                                                                       |
-| SUPPORTS          | list | True       | list of supports id                                                                     |
-| IP                | str  | True       | ip for other services                                                                   |
-| TIMEZONE          | str  | True       | your time zone for working with the scheduler                                           |
-| MODERATE_CHAT     | str  | True       | telegram chat where the event will be moderated                                         |
-| POSTGRES_USER     | str  | True       | username of the database owner                                                          |
-| POSTGRES_PASSWORD | str  | True       | password from the database                                                              |
-| DB_HOST           | str  | True       | IP address of the database (Name of the service in the docker-compose.yml (User `db`)). |
-| DB_PORT           | str  | True       | the database port. Usually the db running on port `5432`                                |
-| POSTGRES_DB       | str  | True       | database name                                                                           |
-| SECRET_KEY        | str  | True       | secret key for django                                                                   |
-| API_KEY           | str  | True       | yandex api key for yandex map                                                           |
-| QIWI_KEY          | str  | True       | qiwi api key for receiving payments                                                     |
-| PHONE_NUMBER      | str  | True       | your phone number (need for qiwi)                                                       |
-| SECRET_P2         | str  | True       | public p2 key which allows you to issue an invoice and open a transfer form             |
-| USE_REDIS         | bool | False      | Optional parameter                                                                      |
+| Variable             | Type | Importance | Description                                     |
+|----------------------|------|------------|-------------------------------------------------|
+| BOT_TOKEN            | str  | True       | Bot token                                       |
+| ADMINS               | list | True       | list of admins id                               |
+| SUPPORTS             | list | True       | list of supports id                             |
+| TIMEZONE             | str  | True       | your time zone for working with the scheduler   |
+| MODERATE_CHAT        | str  | True       | telegram chat where the event will be moderated |
+| SIGNATURE_SECRET_KEY | str  | True       | signature for login                             |
+| USE_REDIS            | bool | True       | Use redis or default storage                    |
 
 Once done, run the following command:
 
@@ -98,29 +88,6 @@ Then install Poetry dependencies:
 poetry install
 ```
 
-## :rocket: Usage
-
-Follow the same steps as described in the Docker section for setting up the .env file. But use `localhost` for `DB_HOST`
-
-### :green_book: Django
-
-To create a `SECRET_KEY`, use this site - [generate secret keys](https://djecrety.ir/)
-and paste it into the `.env` file
-
-```dotenv
-SECRET_KEY=jjv@^0qv^=aydunfjo$qpd_66j+)egm1#-c1iwt%mtjinm)ftj
-```
-
-Run the following commands to set up the Django application:
-```sh
-$ python django_app.py makemigrations
-$ python django_app.py migrate
-$ python django_app.py createsuperuser
-$ python django_app.py makemigrations usersmanage 
-$ python django_app.py migrate usersmanage
-$ python django_app.py runserver
-```
-
 ## :globe_with_meridians: i18n
 
 ### Title - dating
@@ -129,31 +96,31 @@ $ python django_app.py runserver
 
 1. Extract texts from files (he finds it himself)
    ```sh
-   $ pybabel extract -F babel.cfg -o locales/dating.pot .
+   $ pybabel extract -F babel.cfg --input-dirs=. -o locales/messages.pot
    ```
 2. Create a folder for English translation
    ```sh
-   $ pybabel init -i locales/dating.pot -d locales -D dating -l en
+   $ pybabel init -i locales/messages.pot -d locales -D messages -l en
    ```
 3. For Russian translation
    ```sh
-   $ pybabel init -i locales/dating.pot -d locales -D dating -l ru
+   $ pybabel init -i locales/messages.pot -d locales -D messages -l ru
    ```
 4. Translate and compile
    ```sh
-   $ pybabel compile -d locales -D dating
+   $ pybabel compile -d locales -D messages
    ```
 
 #### Updating translations
 
 1. Extract texts from files, add text to translated versions
    ```sh
-   $ pybabel extract -F babel.cfg -o locales/dating.pot .
-   $ pybabel update -d locales -D dating -i locales/dating.pot
+   $ pybabel extract -F babel.cfg -o locales/messages.pot .
+   $ pybabel update -d locales -D dating -i locales/messages.pot
    ```
 2. Manually translate, then compile
    ```sh
-   $ pybabel compile -d locales -D dating
+   $ pybabel compile -d locales -D messages
    ```
 
 ## :test_tube: Tests
