@@ -19,8 +19,12 @@ class UpdateProfileSG(state.StatesGroup):
     first_name = state.State()
     gender = state.State()
     city = state.State()
-    birthday = state.State()
+    age = state.State()
     about_me = state.State()
     interested_in = state.State()
     hobbies = state.State()
     photos = state.State()
+
+
+class DeleteProfileSG(state.StatesGroup):
+    confirmation = state.State()

@@ -11,6 +11,7 @@ from aiogram import (
 )
 from aiogram.filters import (
     CommandStart,
+    StateFilter,
 )
 from aiogram.fsm.context import (
     FSMContext,
@@ -125,3 +126,8 @@ async def about_project_handler(message: types.Message) -> None:
         "Система работает на open-source"
     )
     await message.answer(text=text, reply_markup=inline.about_project_menu())
+
+
+@start_router.message(F.text == "<< Вернуться назад", StateFilter(None))
+async def back_to_main_reply_menu(message: types.Message) -> None:
+    await message.answer(text="Вы вернулись в главное меню", reply_markup=reply.main_menu())
