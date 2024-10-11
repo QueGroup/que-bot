@@ -1,4 +1,4 @@
-exclude: 'docs|frontend|deprecated|README.md|CODE_OF_CONDUCT.md|LICENSE|.github'
+exclude: 'docs|frontend|deprecated|README.md|CODE_OF_CONDUCT.md|LICENSE|.github|tests'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
